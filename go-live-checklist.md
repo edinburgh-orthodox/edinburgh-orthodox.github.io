@@ -1,7 +1,9 @@
 # Go-Live Checklist
 
 Everything left to finish before the Hugo site can go live. Each item is a
-checkbox so you can tick it off as it is done.
+checkbox. GitHub shows checkboxes in repository files as read-only, so tick an
+item by editing `- [ ]` to `- [x]`. Most of the same work is also tracked with
+clickable boxes in issue #32.
 
 ## 1. Missing pages
 
@@ -38,8 +40,8 @@ needs the original article body and any confirmed photographs.
 These are high risk because they touch contact and identity. They need the
 site owner's confirmation before going live.
 
-- [ ] `content/clergy.md`: confirm the clergy details
-- [ ] `content/contact.md`: confirm the committee and contact details
+- [x] `content/clergy.md`: confirm the clergy details
+- [x] `content/contact.md`: confirm the committee and contact details
 
 ## 5. Donations and checkout
 
@@ -60,6 +62,7 @@ site owner's confirmation before going live.
 - 3 donation and checkout items
 - 1 weekly services item
 
-**20 items in total.** About half are blocked on external input (bishop
-approval, George's wishlist, the site owner's donation link and calendar).
-The rest are content tasks that can be done in this repo.
+**22 items in total. 2 done, 20 remaining.** The two confirmations in section 4
+are done. The rest are blocked on external input (bishop approval, George's
+wishlist, the site owner's donation link and calendar) or are content tasks that
+can be done in this repo.

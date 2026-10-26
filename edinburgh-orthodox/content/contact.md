@@ -1,7 +1,6 @@
 +++
 title = "Contact Us"
 description = "Get in touch with the Orthodox Community of St Andrew in Edinburgh."
-# TODO: Confirm details.
 +++
 
 ## Edinburgh Committee

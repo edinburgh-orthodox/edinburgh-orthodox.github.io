@@ -5,17 +5,19 @@
             <h1>{{ .Title }}</h1>
             <p class="page-intro">{{ .Description }}</p>
 
-            <div class="page-col">
+            <div class="churches-grid">
                 {{ range hugo.Data.churches }}
-                    <article class="church-block">
-                        <h2>{{ .name }}</h2>
-                        <p class="muted">{{ .address }}</p>
-                        <p>{{ .description }}</p>
-                        <p>
-                            {{ with .websiteURL }}<a href="{{ . }}" target="_blank" rel="noopener">Visit the school website</a> · {{ end }}
-                            <a href="{{ .mapURL }}" target="_blank" rel="noopener">Open in Google Maps</a>
-                        </p>
-                    </article>
+                    <div class="church-row">
+                        <article class="church-block">
+                            <h2>{{ .name }}</h2>
+                            <p class="muted">{{ .address }}</p>
+                            <p>{{ .description }}</p>
+                            {{ with .websiteURL }}<p><a href="{{ . }}" target="_blank" rel="noopener">Visit the school website</a></p>{{ end }}
+                        </article>
+                        <div class="churches-map">
+                            <iframe src="https://maps.google.com/maps?q={{ .address | urlquery }}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of {{ .name }}"></iframe>
+                        </div>
+                    </div>
                 {{ end }}
             </div>
         </section>
