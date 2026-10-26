@@ -1,9 +1,31 @@
-{{/* Renders the page collection passed as context as a linked, dated news list. */}}
-<div class="news-list">
+{{/* Renders the page collection passed as context as news cards with a front image.
+     The image comes from the `image` front matter key, resolved as a page bundle
+     resource or a site path. Posts without one get `cover*` from their bundle, or
+     the St Andrew icon, so every card keeps the same shape. */}}
+{{ $fallback := "images/st-andrew-icon.jpg" | relURL }}
+<div class="news-grid">
     {{ range . }}
-        <article class="news-item">
-            <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-            <time class="muted" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        {{ $page := . }}
+        {{ $src := "" }}
+        {{ with .Params.image }}
+            {{ with $page.Resources.Get . }}
+                {{ $src = .RelPermalink }}
+            {{ else }}
+                {{ $src = . | relURL }}
+            {{ end }}
+        {{ end }}
+        {{ if not $src }}
+            {{ with .Resources.GetMatch "cover*" }}{{ $src = .RelPermalink }}{{ end }}
+        {{ end }}
+        <article class="news-card">
+            <div class="news-card-media">
+                <img src="{{ $src | default $fallback }}" alt="" loading="lazy">
+            </div>
+            <div class="news-card-body">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+                <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                {{ with .Description }}<p>{{ . }}</p>{{ end }}
+            </div>
         </article>
     {{ end }}
 </div>

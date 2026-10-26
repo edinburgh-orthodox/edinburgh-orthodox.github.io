@@ -1,28 +1,60 @@
-// News list
-.news-list {
+// News cards (news list and homepage recent news)
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  text-align: left;
+}
+.news-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  background: $cream;
+  border: 1px solid $line;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba($ink, 0.04);
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
 }
-.news-item {
-  padding: 14px 0;
-  border-bottom: 1px solid $line;
+.news-card:hover {
+  border-color: $crimson;
+  box-shadow: 0 6px 18px rgba($ink, 0.1);
+  transform: translateY(-2px);
 }
-.news-item:last-child {
-  border-bottom: 0;
+.news-card-media {
+  aspect-ratio: 16 / 10;
+  background: $paper;
 }
-.news-item h3 {
-  margin: 0 0 4px;
-  font-size: 17px;
+.news-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.news-item h3 a,
-.news-item a {
-  color: $ink;
-  text-decoration: none;
+.news-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px 16px;
 }
-.news-item h3 a:hover {
-  text-decoration: underline;
+.news-card time {
+  color: $crimson;
+  font-size: 13px;
 }
-.news-item time {
+.news-card h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.25;
+}
+// Stretch the title link over the whole card, so anywhere on the card opens it.
+.news-card h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.news-card p {
+  margin: 0;
+  color: $muted;
   font-size: 14px;
 }
 

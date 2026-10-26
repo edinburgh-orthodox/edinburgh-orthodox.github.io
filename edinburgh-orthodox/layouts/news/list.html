@@ -5,9 +5,7 @@
             <h1>{{ .Title }}</h1>
             {{ with .Description }}<p class="page-intro">{{ . }}</p>{{ end }}
 
-            <div class="page-col">
-                {{ partial "news-list.html" .Pages.ByDate.Reverse }}
-            </div>
+            {{ partial "news-list.html" .Pages.ByDate.Reverse }}
         </section>
     </div>
 {{ end }}

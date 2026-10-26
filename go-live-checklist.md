@@ -23,17 +23,16 @@ These navigation links point to a placeholder `#` and need a real page.
 - [ ] `data/announcements.yaml`: replace with current, confirmed information
 - [ ] `data/wishlist.yaml`: replace with the final list once created by George
 
-## 3. Empty news posts
+## 3. News posts
 
-All six publish as blank pages because the article body is missing. Each one
-needs the original article body and any confirmed photographs.
+All six posts now have their article bodies and photographs.
 
-- [ ] `content/news/anton-caius-gurgu-ordained-holy-diaconate.md`
-- [ ] `content/news/homes-for-ukraine.md`
-- [ ] `content/news/ordination-bishop-raphael-of-ilion.md`
-- [ ] `content/news/ordination-deacon-janis-stumbris.md`
-- [ ] `content/news/ordination-holy-priesthood-caius-anton-gurgu.md`
-- [ ] `content/news/ordination-reader-caius-gurgu.md`
+- [x] `content/news/anton-caius-gurgu-ordained-holy-diaconate/index.md`
+- [x] `content/news/homes-for-ukraine/index.md`
+- [x] `content/news/ordination-bishop-raphael-of-ilion/index.md`
+- [x] `content/news/ordination-deacon-janis-stumbris/index.md`
+- [x] `content/news/ordination-holy-priesthood-caius-anton-gurgu/index.md`
+- [x] `content/news/ordination-reader-caius-gurgu/index.md`
 
 ## 4. Details needing confirmation
 
@@ -57,12 +56,13 @@ site owner's confirmation before going live.
 
 - 4 missing pages
 - 6 placeholder or fake content items
-- 6 empty news posts
+- 6 news posts
 - 2 confirmation items
 - 3 donation and checkout items
 - 1 weekly services item
 
-**22 items in total. 5 done, 17 remaining.** The Catechesis, Confessions and
-History pages and the two confirmations in section 4 are done. The rest are
-blocked on external input (bishop approval, George's wishlist, the site owner's
-donation link and calendar) or are content tasks that can be done in this repo.
+**22 items in total. 11 done, 11 remaining.** The Catechesis, Confessions and
+History pages, all six news posts and the two confirmations in section 4 are
+done. The rest are blocked on external input (bishop approval, George's
+wishlist, the site owner's donation link and calendar) or are content tasks that
+can be done in this repo.
