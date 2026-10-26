@@ -75,7 +75,7 @@ This was the shortest day of the course, as we needed to clean up and be out by 
 
 Father Ilie is truly a master, and he encouraged and inspired us all to take a more holistic and deeper approach, not just to iconography, but to art, to our environment, and to our faith. To work with him was a true blessing and a privilege, and I believe the icon I produced that week, with much help from Father Ilie, is one of the strongest I have written.
 
-## Thoughts on the course from Cecilo
+## Thoughts on the course from Cecilio
 
 The iconography workshop with Father Ilie was a wonderful experience: to be offered six days of tuition under the guidance of a renowned iconographer, free of charge and in a small and informal group (11 of us at the start), was an amazing opportunity. We went step by step through the whole process, from tracing an exemplar, transferring it to our board, and mixing the pigments with egg to make our colours, to laying down the different layers and doing the detailed work on clothing, hair and facial features.
 
