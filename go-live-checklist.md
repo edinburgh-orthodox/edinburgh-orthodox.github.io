@@ -9,10 +9,10 @@ clickable boxes in issue #32.
 
 These navigation links point to a placeholder `#` and need a real page.
 
-- [ ] Confessions: create `content/confessions.md` and change `url = "#"` to `pageRef` in `hugo.toml` (line 61)
-- [ ] Magazine: create `content/magazine.md` and change `url = "#"` to `pageRef` in `hugo.toml` (line 67)
-- [ ] History: create `content/history.md` and change `url = "#"` to `pageRef` in `hugo.toml` (line 73)
-- [ ] Catechesis: create the page and change `pageRef = "#"` in `hugo.toml` (line 66)
+- [x] Confessions: create `content/confessions.md` and change `url = "#"` to `pageRef` in `hugo.toml`
+- [ ] Magazine: create `content/magazine.md` and change `url = "#"` to `pageRef` in `hugo.toml` (line 68)
+- [x] History: create `content/history.md` and change `url = "#"` to `pageRef` in `hugo.toml`
+- [x] Catechesis: create the page and change `pageRef = "#"` in `hugo.toml` (line 66)
 
 ## 2. Placeholder or fake content
 
@@ -62,7 +62,7 @@ site owner's confirmation before going live.
 - 3 donation and checkout items
 - 1 weekly services item
 
-**22 items in total. 2 done, 20 remaining.** The two confirmations in section 4
-are done. The rest are blocked on external input (bishop approval, George's
-wishlist, the site owner's donation link and calendar) or are content tasks that
-can be done in this repo.
+**22 items in total. 5 done, 17 remaining.** The Catechesis, Confessions and
+History pages and the two confirmations in section 4 are done. The rest are
+blocked on external input (bishop approval, George's wishlist, the site owner's
+donation link and calendar) or are content tasks that can be done in this repo.

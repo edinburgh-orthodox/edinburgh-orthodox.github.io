@@ -55,13 +55,12 @@ enableRobotsTXT = true
 
 [[menus.main]]
   name = "Catechesis"
-  pageRef = "#"
+  pageRef = "/catechesis"
   weight = 66
 
-# TODO: Create content/confessions.md, then replace this placeholder URL with pageRef.
 [[menus.main]]
   name = "Confessions"
-  url = "#"
+  pageRef = "/confessions"
   weight = 70
 
 # TODO: Create content/magazine.md, then replace this placeholder URL with pageRef.
@@ -70,10 +69,9 @@ enableRobotsTXT = true
   url = "#"
   weight = 80
 
-# TODO: Create content/history.md, then replace this URL with pageRef.
 [[menus.main]]
   name = "History"
-  url = "#"
+  pageRef = "/history"
   weight = 90
 
 [[menus.main]]
