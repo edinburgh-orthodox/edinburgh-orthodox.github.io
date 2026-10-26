@@ -10,7 +10,7 @@ clickable boxes in issue #32.
 These navigation links point to a placeholder `#` and need a real page.
 
 - [x] Confessions: create `content/confessions.md` and change `url = "#"` to `pageRef` in `hugo.toml`
-- [ ] Magazine: create `content/magazine.md` and change `url = "#"` to `pageRef` in `hugo.toml` (line 68)
+- [ ] Magazine: create `content/magazine.md` and change `url = "#"` to `pageRef` in `hugo.toml` (line 70)
 - [x] History: create `content/history.md` and change `url = "#"` to `pageRef` in `hugo.toml`
 - [x] Catechesis: create the page and change `pageRef = "#"` in `hugo.toml` (line 66)
 

@@ -59,6 +59,15 @@ h2 {
   margin: 0 0 16px;
 }
 
+// Page and section headings carry the brand colour.
+h1,
+h2 {
+  color: $crimson;
+}
+.wrap h2 a {
+  color: inherit;
+}
+
 h3 {
   font-family: $font-display;
   font-size: 20px;

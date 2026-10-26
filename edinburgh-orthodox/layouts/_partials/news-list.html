@@ -1,25 +1,50 @@
 {{/* Renders the page collection passed as context as news cards with a front image.
      The image comes from the `image` front matter key, resolved as a page bundle
      resource or a site path. Posts without one get `cover*` from their bundle, or
-     the St Andrew icon, so every card keeps the same shape. */}}
-{{ $fallback := "images/st-andrew-icon.jpg" | relURL }}
+     the St Andrew icon, so every card keeps the same shape. Bundle images are
+     cropped to the 16:10 card shape at up to three widths. */}}
+{{ $fallback := resources.Get "images/st-andrew-icon.jpg" }}
 <div class="news-grid">
-    {{ range . }}
-        {{ $page := . }}
+    {{ range $i, $page := . }}
         {{ $src := "" }}
-        {{ with .Params.image }}
+        {{ $cover := false }}
+        {{ with $page.Params.image }}
             {{ with $page.Resources.Get . }}
-                {{ $src = .RelPermalink }}
+                {{ $cover = . }}
             {{ else }}
                 {{ $src = . | relURL }}
             {{ end }}
         {{ end }}
-        {{ if not $src }}
-            {{ with .Resources.GetMatch "cover*" }}{{ $src = .RelPermalink }}{{ end }}
+        {{ if not $cover }}
+            {{ with $page.Resources.GetMatch "cover*" }}{{ $cover = . }}{{ end }}
         {{ end }}
+        {{ if and (not $cover) (not $src) }}{{ $cover = $fallback }}{{ end }}
         <article class="news-card">
             <div class="news-card-media">
-                <img src="{{ $src | default $fallback }}" alt="" loading="lazy">
+                {{ if $cover }}
+                    {{ $cardWidths := slice 320 }}
+                    {{ if gt $cover.Width 320 }}{{ $cardWidths = $cardWidths | append 480 }}{{ end }}
+                    {{ if gt $cover.Width 480 }}{{ $cardWidths = $cardWidths | append 640 }}{{ end }}
+                    {{ if ge $cover.Width 800 }}{{ $cardWidths = $cardWidths | append 800 }}{{ end }}
+                    {{ $webpParts := slice }}
+                    {{ $jpegParts := slice }}
+                    {{ $baseJpeg := false }}
+                    {{ range $cardWidths }}
+                        {{ $w := . }}
+                        {{ $h := div (mul $w 5) 8 }}
+                        {{ $webp := $cover.Fill (printf "%dx%d Center webp q85" $w $h) }}
+                        {{ $jpeg := $cover.Fill (printf "%dx%d Center jpeg q85" $w $h) }}
+                        {{ if eq $w 320 }}{{ $baseJpeg = $jpeg }}{{ end }}
+                        {{ $webpParts = $webpParts | append (printf "%s %dw" $webp.RelPermalink $webp.Width) }}
+                        {{ $jpegParts = $jpegParts | append (printf "%s %dw" $jpeg.RelPermalink $jpeg.Width) }}
+                    {{ end }}
+                    <picture>
+                        <source type="image/webp" srcset="{{ delimit $webpParts ", " }}" sizes="(min-width: 760px) 257px, calc(100vw - 48px)">
+                        <img src="{{ $baseJpeg.RelPermalink }}" srcset="{{ delimit $jpegParts ", " }}" sizes="(min-width: 760px) 257px, calc(100vw - 48px)" width="{{ $baseJpeg.Width }}" height="{{ $baseJpeg.Height }}" alt=""{{ if eq $i 0 }} loading="eager" fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async">
+                    </picture>
+                {{ else }}
+                    <img src="{{ $src | default $fallback }}" alt=""{{ if eq $i 0 }} loading="eager" fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async">
+                {{ end }}
             </div>
             <div class="news-card-body">
                 <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>

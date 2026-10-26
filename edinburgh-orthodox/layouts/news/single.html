@@ -2,14 +2,21 @@
 {{ define "main" }}
     <article class="wrap news-post">
         <header>
-            <p><a href="{{ "/news/" | relURL }}">News</a></p>
+            <p class="news-eyebrow">
+                <a href="{{ "/news/" | relURL }}">News</a>
+                <span aria-hidden="true">·</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+            </p>
             <h1>{{ .Title }}</h1>
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
             {{ with .Description }}<p class="news-summary">{{ . }}</p>{{ end }}
         </header>
 
         <div class="news-content">
             {{ .Content }}
         </div>
+
+        <footer class="news-footer">
+            <a href="{{ "/news/" | relURL }}">All news</a>
+        </footer>
     </article>
 {{ end }}

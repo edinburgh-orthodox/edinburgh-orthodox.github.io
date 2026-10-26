@@ -1,0 +1,23 @@
+{{/* Groups page-bundle images into a thumbnail grid with links to the originals.
+     Use positional parameters: gallery "one.jpg" "two.jpg" ... */}}
+{{ $page := .Page }}
+{{ $count := len .Params }}
+{{ $feature := gt $count 6 }}
+{{ $trio := eq $count 3 }}
+{{ $pair := eq $count 2 }}
+<div class="news-gallery{{ if $trio }} news-gallery--trio{{ end }}{{ if $pair }} news-gallery--pair{{ end }}">
+    {{ range $i, $img := .Params }}
+        {{ with $page.Resources.Get $img }}
+            {{ $smallWebp := .Fill "320x240 Center webp q85" }}
+            {{ $smallJpeg := .Fill "320x240 Center jpeg q85" }}
+            {{ $largeWebp := .Fill "640x480 Center webp q85" }}
+            {{ $largeJpeg := .Fill "640x480 Center jpeg q85" }}
+            <a class="news-gallery-item{{ if and (eq $i 0) (or $feature $trio) }} news-gallery-item--lead{{ end }}" href="{{ .RelPermalink }}" target="_blank" rel="noopener" aria-label="View full size image">
+                <picture>
+                    <source type="image/webp" srcset="{{ $smallWebp.RelPermalink }} 320w, {{ $largeWebp.RelPermalink }} 640w" sizes="(min-width: 768px) 160px, 45vw">
+                    <img src="{{ $smallJpeg.RelPermalink }}" srcset="{{ $smallJpeg.RelPermalink }} 320w, {{ $largeJpeg.RelPermalink }} 640w" sizes="(min-width: 768px) 160px, 45vw" width="{{ $smallJpeg.Width }}" height="{{ $smallJpeg.Height }}" alt="" loading="lazy" decoding="async">
+                </picture>
+            </a>
+        {{ end }}
+    {{ end }}
+</div>

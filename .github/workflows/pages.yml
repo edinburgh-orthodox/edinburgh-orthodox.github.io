@@ -30,6 +30,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Cache Hugo resources
+        uses: actions/cache@v4
+        with:
+          path: edinburgh-orthodox/resources/_gen
+          key: ${{ runner.os }}-hugo-images-${{ hashFiles('edinburgh-orthodox/content/**/*.jpg', 'edinburgh-orthodox/content/**/*.jpeg', 'edinburgh-orthodox/content/**/*.png', 'edinburgh-orthodox/content/**/*.webp', 'edinburgh-orthodox/content/**/*.gif', 'edinburgh-orthodox/content/**/*.tiff') }}
+          restore-keys: |
+            ${{ runner.os }}-hugo-images-
+
       - name: Build
         run: hugo --source edinburgh-orthodox --minify --baseURL https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/
 

@@ -7,6 +7,8 @@ image = "image.png"
 draft = false
 +++
 
+![Clergy at the analogion during the pastoral visit](image.png)
+
 From Friday 20th to Sunday 22nd March 2026, His Eminence Archbishop Nikitas of Thyateira and Great Britain visited the Orthodox communities in Scotland. The visit began in Glasgow on the Friday evening, where the Archbishop presided at the Salutations to the Most Holy Theotokos at St Luke's Cathedral, together with Archimandrite Mark Mitchell. Bishop Raphael joined in prayer from the altar.
 
 On the Saturday, the clergy serving Scotland and the north of England gathered in Edinburgh for a Synaxis. The Archbishop sat with them to talk about the life of the parishes, the challenges we face, and the pastoral care of the region. He was joined by Bishop Raphael, who oversees our area. That evening the Archbishop attended Vespers at Meadow Lane.
@@ -19,8 +21,4 @@ The Archbishop then joined the community for a meal at Craigmillar Park Church H
 
 Photographs from the visit.
 
-![](image.png)
-
-![](image-1.png)
-
-![](image-2.png)
+{{< gallery "image-1.png" "image-2.png" >}}
