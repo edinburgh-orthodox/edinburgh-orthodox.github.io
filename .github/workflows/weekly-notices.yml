@@ -1,0 +1,52 @@
+name: Send weekly notices
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview only, do not post or send"
+        type: boolean
+        default: true
+      channels:
+        description: "Channels to send"
+        type: choice
+        options:
+          - both
+          - facebook
+          - mailchimp
+        default: both
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekly-notices
+  cancel-in-progress: false
+
+jobs:
+  send:
+    name: Send notices
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Test formatting
+        run: python -m unittest discover -s scripts -p "test_*.py"
+      - name: Post to Facebook and Mailchimp
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          CHANNELS: ${{ inputs.channels }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_API_VERSION: v24.0
+          MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
+          MAILCHIMP_SERVER_PREFIX: ${{ secrets.MAILCHIMP_SERVER_PREFIX }}
+          MAILCHIMP_AUDIENCE_ID: ${{ secrets.MAILCHIMP_AUDIENCE_ID }}
+          MAILCHIMP_REPLY_TO: ${{ secrets.MAILCHIMP_REPLY_TO }}
+          MAILCHIMP_FROM_NAME: "St Andrew's Orthodox Church"
+        run: python scripts/send_weekly_notices.py
