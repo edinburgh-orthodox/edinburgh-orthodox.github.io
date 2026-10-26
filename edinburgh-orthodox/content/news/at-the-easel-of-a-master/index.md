@@ -1,7 +1,9 @@
 +++
 title = "At the Easel of a Master"
 date = 2026-02-22
+aliases = ["/2026/02/22/byzantine-iconography-workshop-by-fr-ilie/"]
 description = "Reader Chad Sutherland-Lockhart reflects on six days learning Byzantine iconography from Father Ilie Bobaianu."
+image = "workshop-group.jpg"
 draft = false
 +++
 

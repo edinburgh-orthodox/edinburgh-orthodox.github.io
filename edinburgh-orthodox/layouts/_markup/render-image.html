@@ -1,0 +1,42 @@
+{{- /* Render Markdown images through the image pipeline.
+       Page bundle images become responsive WebP with a JPEG fallback,
+       sized for the 720px article column. Remote URLs and static files
+       fall through to a plain img. */ -}}
+{{- $path := strings.TrimPrefix "./" .Destination -}}
+{{- $img := false -}}
+{{- with .Page.Resources.GetMatch $path -}}
+    {{- $img = . -}}
+{{- end -}}
+{{- if $img -}}
+    {{- $widths := slice -}}
+    {{- range slice 480 640 768 960 1200 -}}
+        {{- if le . $img.Width -}}
+            {{- $widths = $widths | append . -}}
+        {{- end -}}
+    {{- end -}}
+    {{- if and (lt $img.Width 1200) (not (in $widths $img.Width)) -}}
+        {{- $widths = $widths | append $img.Width -}}
+    {{- end -}}
+    {{- if not $widths -}}
+        {{- $widths = slice $img.Width -}}
+    {{- end -}}
+    {{- $baseJpeg := $img.Resize (printf "%dx jpeg q85" (index $widths 0)) -}}
+    {{- $webpParts := slice -}}
+    {{- $jpegParts := slice -}}
+    {{- range $widths -}}
+        {{- $webp := $img.Resize (printf "%dx webp q85" .) -}}
+        {{- $jpeg := $img.Resize (printf "%dx jpeg q85" .) -}}
+        {{- $webpParts = $webpParts | append (printf "%s %dw" $webp.RelPermalink $webp.Width) -}}
+        {{- $jpegParts = $jpegParts | append (printf "%s %dw" $jpeg.RelPermalink $jpeg.Width) -}}
+    {{- end -}}
+    {{- $sizes := "(min-width: 768px) 672px, calc(100vw - 48px)" -}}
+    {{- $alt := .PlainText -}}
+    <a class="news-image-link" href="{{ $img.RelPermalink }}" target="_blank" rel="noopener"{{ if not $alt }} aria-label="View full size image"{{ end }}>
+    <picture>
+        <source type="image/webp" srcset="{{ delimit $webpParts ", " }}" sizes="{{ $sizes }}">
+        <img src="{{ $baseJpeg.RelPermalink }}" srcset="{{ delimit $jpegParts ", " }}" sizes="{{ $sizes }}" width="{{ $baseJpeg.Width }}" height="{{ $baseJpeg.Height }}" alt="{{ $alt }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+    </picture>
+    </a>
+{{- else -}}
+    <img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+{{- end -}}

@@ -39,12 +39,14 @@ enableRobotsTXT = true
   [menus.main.params]
     primary = true
 
-[[menus.main]]
-  name = "FAQ"
-  pageRef = "/faq"
-  weight = 60
-  [menus.main.params]
-    primary = true
+# TODO: Uncomment the FAQ menu entry once the page is ready to ship, and set
+# draft = false in content/faq.md.
+# [[menus.main]]
+#   name = "FAQ"
+#   pageRef = "/faq"
+#   weight = 60
+#   [menus.main.params]
+#     primary = true
 
 [[menus.main]]
   name = "Contact"

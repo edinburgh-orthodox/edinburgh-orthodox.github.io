@@ -36,6 +36,13 @@
   .bookshop-fields .bookshop-add {
     flex: 1 1 100%;
   }
+  .news-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 124px;
+  }
+  .news-gallery--trio {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (max-width: 919px) {
   .nav-row {
