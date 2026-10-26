@@ -1,3 +1,9 @@
+@media (max-width: 760px) {
+  .church-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
 @media (max-width: 560px) {
   .brand {
     font-size: 20px;

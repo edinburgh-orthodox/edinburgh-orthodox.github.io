@@ -1,7 +1,6 @@
 +++
 title = "Clergy"
 description = "The clergy who serve the Orthodox Community of St Andrew in Edinburgh."
-# TODO: Confirm details
 +++
 
 The clergy listed below serve the Orthodox Community of St Andrew in Edinburgh. You are welcome to contact any of them.

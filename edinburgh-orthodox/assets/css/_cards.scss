@@ -1,16 +1,32 @@
 // Church blocks (Our Churches page)
-.church-block {
-  border-bottom: 1px solid $line;
-  padding: 0 0 20px;
-  margin-bottom: 20px;
+.churches-grid {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: left;
 }
-.church-block:last-child {
+.church-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  padding: 0 0 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid $line;
+}
+.church-row:last-child {
   border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.church-block {
+  padding: 0;
+  margin: 0;
 }
 .church-block h2,
 .church-block h3 {
   margin: 0 0 2px;
   font-size: 20px;
+  text-align: left;
 }
 .church-block p {
   margin: 8px 0;
@@ -21,5 +37,15 @@
 }
 .church-block a:hover {
   text-decoration: underline;
+}
+.churches-map {
+  display: flex;
+}
+.churches-map iframe {
+  display: block;
+  width: 100%;
+  min-height: 260px;
+  border: 0;
+  border-radius: 8px;
 }
 
