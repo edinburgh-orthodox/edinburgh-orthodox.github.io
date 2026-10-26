@@ -70,6 +70,13 @@
 .cal {
   border-top: 1px solid $line;
 }
+.cal-card {
+  background: #fff;
+  border: 1px solid $line;
+  border-radius: 12px;
+  padding: 12px;
+  overflow: hidden;
+}
 .cal-embed {
   display: block;
   width: 100%;

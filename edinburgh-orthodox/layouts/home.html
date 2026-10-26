@@ -20,11 +20,14 @@
             <h2>Weekly Services</h2>
             <div class="cal-wrap">
                 {{ with site.Params.calendarID }}
-                    <iframe
-                        class="cal-embed"
-                        src="https://calendar.google.com/calendar/embed?src={{ . | urlquery }}&amp;ctz=Europe%2FLondon&amp;mode=WEEK"
-                        title="Services calendar"
-                        loading="lazy"></iframe>
+                    {{/* Agenda keeps service titles readable at the site's column width. */}}
+                    <div class="cal-card">
+                        <iframe
+                            class="cal-embed"
+                            src="https://calendar.google.com/calendar/embed?src={{ . | urlquery }}&amp;ctz=Europe%2FLondon&amp;mode=AGENDA&amp;showTitle=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;bgcolor=%23ffffff&amp;color=%237b1e26"
+                            title="Services calendar"
+                            loading="lazy"></iframe>
+                    </div>
                 {{ else }}
                     {{/* Fallback until the calendar account exists (issue #5). */}}
                     <div class="cal">
