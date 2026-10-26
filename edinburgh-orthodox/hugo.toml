@@ -65,12 +65,6 @@ enableRobotsTXT = true
   pageRef = "/confessions"
   weight = 70
 
-# TODO: Create content/magazine.md, then replace this placeholder URL with pageRef.
-[[menus.main]]
-  name = "Magazine"
-  url = "#"
-  weight = 80
-
 [[menus.main]]
   name = "History"
   pageRef = "/history"
