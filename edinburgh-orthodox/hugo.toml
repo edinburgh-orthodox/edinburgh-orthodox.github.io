@@ -7,10 +7,9 @@ enableRobotsTXT = true
 [params]
   description = "Orthodox Community of St Andrew, Edinburgh"
   charityNumber = "SC054378"
-  # Public Google Calendar ID for the services calendar. Leave empty until the
-  # calendar account exists (issue #5); the homepage then shows the sample week
-  # from data/services.yaml. Set it and the homepage shows the Google embed.
-  calendarID = ""
+  # Public Google Calendar ID for the services calendar. This is a temporary
+  # personal calendar; move it to the parish account in issue #5.
+  calendarID = "ac003013300cb8e8f451001038e3e25a9d339c554a6f4d090b138ce4ab5f1b7e@group.calendar.google.com"
 
 [permalinks]
   news = "/news/:contentbasename/"
