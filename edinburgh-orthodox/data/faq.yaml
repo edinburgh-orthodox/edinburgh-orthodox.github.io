@@ -1,10 +1,54 @@
-# TODO: replace with real questions once approved by the bishop
-- question: "1. Fake Holder Question?"
-  answer: >-
-    filler answer
-- question: "2. Fake Holder Question?"
-  answer: >-
-    filler answer
-- question: "3. Fake Holder Question?"
-  answer: >-
-    filler answer
+# The FAQ page renders this file. The wording is the reviewed proposal in pull request #3.
+# TODO: Merge only once the bishop has approved these answers.
+- question: "1. May I attend if I am not Orthodox?"
+  answer: |-
+    Yes. Everyone is welcome to attend our services, whether you are Orthodox, belong to another Christian tradition, are exploring Christianity, or are simply curious. You will not be pressured to participate or make a commitment.
+
+    For your first visit, we recommend attending a Divine Liturgy. The Liturgy is usually preceded by Matins, but newcomers are not expected to attend Matins and may arrive shortly before the Divine Liturgy begins.
+
+    Visitors may join in the prayers and venerate the icons if they wish, but they are not expected to imitate every action of the congregation.
+- question: "2. What should I expect at my first Divine Liturgy?"
+  answer: |-
+    The Divine Liturgy is the principal worship service of the Orthodox Church. It includes hymns, prayers, readings from Scripture, a homily, and Holy Communion (refer to question 6). You may also encounter incense, icons, candles, processions, and chanted responses.
+
+    The congregation may stand for much of the Liturgy, but visitors are welcome to sit whenever necessary. You are not expected to know all the prayers or customs. Simply observe, pray, and participate to the extent that you feel comfortable. Please introduce yourself to a clergy member or another parishioner after the service.
+- question: "3. What language is used?"
+  answer: |-
+    Our services are primarily in English, though Greek, Church Slavonic, and Romanian may also be used in some hymns and prayers.
+- question: "4. Is there a dress code?"
+  answer: |-
+    There is no formal dress code, but we ask everyone to dress modestly and respectfully, as they would when visiting any sacred place. Please avoid wearing shorts and, where possible, choose a long sleeved shirt. Clothing does not need to be expensive or especially formal.
+
+    Customs concerning head coverings vary among Orthodox parishes. In our community, head coverings are welcome but not required.
+- question: "5. May visitors sit during the service?"
+  answer: |-
+    Yes. Although Orthodox Christians traditionally stand during much of the service, you are welcome to sit whenever needed. Those who are elderly, pregnant, injured, living with a disability, or caring for young children should feel entirely free to sit.
+
+    As a general guide, worshippers usually stand during the Gospel reading, the Creed, the Lord’s Prayer, and certain other solemn moments. If you are unsure, you may simply follow the congregation.
+- question: "6. May non-Orthodox visitors receive Holy Communion?"
+  answer: |-
+    We kindly ask visitors who are not Orthodox Christians not to receive Holy Communion. In the Orthodox Church, Holy Communion is received by Orthodox Christians who have been formally received into the Church through Baptism and Chrismation, or through Chrismation alone, and who are properly prepared and in good standing with the Church.
+
+    This practice is not a judgment of our visitors' faith or sincerity. Rather, receiving Holy Communion expresses full unity in the Orthodox faith. Visitors are warmly invited to remain for the entire service and to receive the blessed bread (antidoron) distributed at its conclusion.
+- question: "7. May non-Orthodox Christians go to Confession?"
+  answer: |-
+    Sacramental Confession and absolution are reserved for Orthodox Christians. However, anyone may ask to speak privately with a member of the clergy for pastoral guidance, prayer, or help with a spiritual concern.
+- question: "8. What happens after the service?"
+  answer: |-
+    Members of the congregation gather for refreshments and fellowship after the service. When a hall is available, everyone will move there together after the service. Visitors are warmly invited to stay, meet the clergy and parishioners, and ask questions. There is no obligation to remain if you need to leave.
+- question: "9. How can I learn more about the Orthodox faith?"
+  answer: |-
+    You are welcome to attend our services and speak with a member of the clergy. We can recommend books, talks, and other resources suited to your questions and background. Those wishing to explore the faith more deeply may also attend catechetical instruction without any obligation to join the Church.
+- question: "10. How do I become an Orthodox Christian?"
+  answer: |-
+    The journey normally begins by attending services and speaking with a member of the clergy. Those interested in joining the Church spend time learning about the Orthodox faith, participating in parish life, and preparing through a period of instruction called catechesis.
+
+    When a person is ready, they are received into the Church through Baptism and Chrismation or, in some circumstances, through Chrismation alone, according to the direction of the bishop. The process is personal and is not rushed. It may take up to a year, with an emphasis on building a strong foundation in Orthodox Christian life and developing a relationship with a spiritual father, a priest who provides ongoing spiritual guidance, rather than on intellectual understanding alone. Please speak with a member of the clergy if you would like to begin.
+- question: "11. How do I become a registered legal member of the church charity?"
+  answer: |-
+    Orthodox Christians above the age of 18 who have attended our services for at least six months may [apply to become registered parish members](https://forms.cloud.microsoft/pages/responsepage.aspx?id=vPEYq317pk6fUNweLEkwAvXUGwYznFRHrgDvDXxHsj5UMlpXU0JURVZINFRYVVVXTEFUTjlaQ1dGNy4u&route=shorturl).
+
+    Registered members may vote at Annual General Meetings and Special General Meetings and may be eligible for election to the Community Committee. We encourage eligible parishioners to become members and participate in the life of the community.
+- question: "12. How can I receive parish announcements?"
+  answer: |-
+    Announcements can be received by signing up to our mailing list and are also published on the home page of our website. You may also speak with a member of the clergy or the Community Committee to ask to be added to the parish WhatsApp announcements group.
