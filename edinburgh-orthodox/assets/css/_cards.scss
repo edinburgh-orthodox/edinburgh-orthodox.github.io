@@ -1,4 +1,7 @@
 // Church blocks (Our Churches page)
+// Each church is one row: the address card on the left, its embedded map on
+// the right. The grid is wider than the 640px .page-col because it holds two
+// columns side by side.
 .churches-grid {
   max-width: 960px;
   margin: 0 auto;
@@ -6,11 +9,16 @@
 }
 .church-row {
   display: grid;
+  // minmax(0, 1fr) lets a long address wrap instead of widening its column
+  // and pushing the map off the page.
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 28px;
+  // Both columns take the height of the taller one, so the map ends level
+  // with the card below it.
   align-items: stretch;
   padding: 0 0 24px;
   margin-bottom: 24px;
+  // Divider lives on the row, so it runs under the map as well as the card.
   border-bottom: 1px solid $line;
 }
 .church-row:last-child {
@@ -18,6 +26,7 @@
   padding-bottom: 0;
   margin-bottom: 0;
 }
+// The row now draws the divider, so the card carries no spacing of its own.
 .church-block {
   padding: 0;
   margin: 0;
@@ -26,6 +35,9 @@
 .church-block h3 {
   margin: 0 0 2px;
   font-size: 20px;
+  // Left aligned, unlike the centred .page-section headings, because the
+  // card is a narrow column and a centred name would drift away from its
+  // address.
   text-align: left;
 }
 .church-block p {
@@ -39,11 +51,14 @@
   text-decoration: underline;
 }
 .churches-map {
+  // Flex lets the iframe stretch to the height of the card beside it.
   display: flex;
 }
 .churches-map iframe {
   display: block;
   width: 100%;
+  // Keeps the map usable when the card is short, for example a name and a
+  // one-line address.
   min-height: 260px;
   border: 0;
   border-radius: 8px;

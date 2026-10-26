@@ -1,3 +1,4 @@
+// Church rows stack below tablet width: the card first, then its map.
 @media (max-width: 760px) {
   .church-row {
     grid-template-columns: minmax(0, 1fr);
