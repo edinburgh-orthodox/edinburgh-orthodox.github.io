@@ -7,6 +7,10 @@ enableRobotsTXT = true
 [params]
   description = "Orthodox Community of St Andrew, Edinburgh"
   charityNumber = "SC054378"
+  # Public Google Calendar ID for the services calendar. Leave empty until the
+  # calendar account exists (issue #5); the homepage then shows the sample week
+  # from data/services.yaml. Set it and the homepage shows the Google embed.
+  calendarID = ""
 
 [permalinks]
   news = "/news/:contentbasename/"

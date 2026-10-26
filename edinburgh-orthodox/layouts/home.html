@@ -16,32 +16,39 @@
     </div>
 
     <div class="wrap">
-        {{/* TODO: Replace sample service data with Google Calendar and implement the copy-this-week action. */}}
         <section class="cal-section">
             <h2>Weekly Services</h2>
             <div class="cal-wrap">
-                <div class="cal">
-                    {{ range $services }}
-                        {{ $day := . }}
-                        <div class="cal-day">
-                            <div class="cal-date">
-                                {{ .date }}
-                                {{ with .note }}
-                                    <small>
-                                        {{ . }}
-                                        {{ with $day.mark }}<span class="mark {{ $day.markClass }}">{{ . }}</span>{{ end }}
-                                    </small>
-                                {{ end }}
+                {{ with site.Params.calendarID }}
+                    <iframe
+                        class="cal-embed"
+                        src="https://calendar.google.com/calendar/embed?src={{ . | urlquery }}&amp;ctz=Europe%2FLondon&amp;mode=WEEK"
+                        title="Services calendar"
+                        loading="lazy"></iframe>
+                {{ else }}
+                    {{/* Fallback until the calendar account exists (issue #5). */}}
+                    <div class="cal">
+                        {{ range $services }}
+                            {{ $day := . }}
+                            <div class="cal-day">
+                                <div class="cal-date">
+                                    {{ .date }}
+                                    {{ with .note }}
+                                        <small>
+                                            {{ . }}
+                                            {{ with $day.mark }}<span class="mark {{ $day.markClass }}">{{ . }}</span>{{ end }}
+                                        </small>
+                                    {{ end }}
+                                </div>
+                                <div class="cal-body">
+                                    {{ range .services }}
+                                        <span class="svc">{{ .time }}<span class="loc">({{ .location }})</span></span>
+                                    {{ end }}
+                                </div>
                             </div>
-                            <div class="cal-body">
-                                {{ range .services }}
-                                    <span class="svc">{{ .time }}<span class="loc">({{ .location }})</span></span>
-                                {{ end }}
-                            </div>
-                        </div>
-                    {{ end }}
-                </div>
-                <p class="muted">Edited in Google Calendar. A "copy this week" button produces the plain text to post to WhatsApp, Facebook, and email.</p>
+                        {{ end }}
+                    </div>
+                {{ end }}
             </div>
         </section>
 
