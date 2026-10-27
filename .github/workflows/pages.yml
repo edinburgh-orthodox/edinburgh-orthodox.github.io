@@ -28,6 +28,7 @@ jobs:
           extended: true
 
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v5
 
       - name: Cache Hugo resources
@@ -39,7 +40,7 @@ jobs:
             ${{ runner.os }}-hugo-images-
 
       - name: Build
-        run: hugo --source edinburgh-orthodox --minify --baseURL https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/
+        run: hugo --source edinburgh-orthodox --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

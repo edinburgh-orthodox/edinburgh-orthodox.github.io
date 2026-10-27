@@ -18,7 +18,7 @@ Pages now, and the WordPress subscription should stop once the domain points her
 - **Preview:** `hugo server --source edinburgh-orthodox`, then http://localhost:1313/
 - **Deploy:** a merge into `main` publishes the site. `.github/workflows/pages.yml` builds it
   and deploys the artifact to GitHub Pages at
-  https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/ .
+  https://edinburgh-orthodox.github.io/ .
   `.github/workflows/hugo.yml` builds every pull request.
 - **Rules on `main`:** pull requests only, squash merges only, one approval, no self-approval.
   Repository admins can bypass the review rule when there is no other reviewer.

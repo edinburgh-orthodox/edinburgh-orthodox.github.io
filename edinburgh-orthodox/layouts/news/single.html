@@ -3,7 +3,7 @@
     <article class="wrap news-post">
         <header>
             <p class="news-eyebrow">
-                <a href="{{ "/news/" | relURL }}">News</a>
+                <a href="{{ "news/" | relURL }}">News</a>
                 <span aria-hidden="true">·</span>
                 <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
             </p>
@@ -16,7 +16,7 @@
         </div>
 
         <footer class="news-footer">
-            <a href="{{ "/news/" | relURL }}">All news</a>
+            <a href="{{ "news/" | relURL }}">All news</a>
         </footer>
     </article>
 {{ end }}

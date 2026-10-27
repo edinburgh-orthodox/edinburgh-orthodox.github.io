@@ -10,11 +10,11 @@
 </p>
 
 <p align="center">
-  <a href="https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/">🌐 View the site</a>
+  <a href="https://edinburgh-orthodox.github.io/">🌐 View the site</a>
   &nbsp;·&nbsp;
   <a href="https://edinburgh-orthodox.org.uk" target="_blank">📍 Live domain</a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/edinburgh-orthodox/edinburgh-orthodox.org.uk/issues">🕯️ Issue tracker</a>
+  <a href="https://github.com/edinburgh-orthodox/edinburgh-orthodox.github.io/issues">🕯️ Issue tracker</a>
 </p>
 
 <hr/>
@@ -27,10 +27,12 @@ since 1948.*
 The site is a static [Hugo](https://gohugo.io) site in the `edinburgh-orthodox/` folder. A
 merge into `main` publishes it: the workflow in `.github/workflows/pages.yml` builds the site
 and deploys it to GitHub Pages, and it will serve edinburgh-orthodox.org.uk once the domain is
-moved over (issue [#9](https://github.com/edinburgh-orthodox/edinburgh-orthodox.org.uk/issues/9)).
+moved over (issue [#9](https://github.com/edinburgh-orthodox/edinburgh-orthodox.github.io/issues/9)).
+The workflow takes the base URL from GitHub Pages, so the same build works at the github.io
+address now and at the custom domain after it is connected.
 
 The site it replaces is the WordPress.com site, which is being retired
-(issue [#32](https://github.com/edinburgh-orthodox/edinburgh-orthodox.org.uk/issues/32)). New
+(issue [#32](https://github.com/edinburgh-orthodox/edinburgh-orthodox.github.io/issues/32)). New
 work goes in this repository, not in the WordPress admin.
 
 The plans for the site live at the repo root: the proposal, the spec, the tickets, and the
@@ -80,10 +82,10 @@ of the published build. Photographs go alongside the post in a folder of the sam
 
 ## Start here
 
-1. 🌐 **[View the site](https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/)**.
+1. 🌐 **[View the site](https://edinburgh-orthodox.github.io/)**.
 2. 📜 Read [`proposal.md`](proposal.md) for the plan.
 3. 🧾 Read [`docs/spec-website-redesign.md`](docs/spec-website-redesign.md) for the detail.
-4. 🕯️ Pick up a ticket from the [issue tracker](https://github.com/edinburgh-orthodox/edinburgh-orthodox.org.uk/issues).
+4. 🕯️ Pick up a ticket from the [issue tracker](https://github.com/edinburgh-orthodox/edinburgh-orthodox.github.io/issues).
 
 <hr/>
 

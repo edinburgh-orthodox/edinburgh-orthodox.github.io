@@ -2,7 +2,9 @@
 {{ $primaryLinks := where site.Menus.main "Params.primary" true }}
 <header class="site-head">
     <div class="inner">
-        <a class="brand" href="{{ "/" | relURL }}">
+        {{/* site.Home.RelPermalink keeps the /edinburgh-orthodox.org.uk/ path that
+             GitHub Pages serves under. relURL "/" would point at the domain root. */}}
+        <a class="brand" href="{{ site.Home.RelPermalink }}">
             <img src="{{ "images/red-logo-church.jpg" | relURL }}" alt="St Andrew's Orthodox Church logo">
             St Andrew's Orthodox Church
         </a>
