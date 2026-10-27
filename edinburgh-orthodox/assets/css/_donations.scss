@@ -27,6 +27,35 @@
   vertical-align: top;
 }
 
+// On phones the label and value stack so long values such as the IBAN stay
+// inside the box.
+@media (max-width: 560px) {
+  .bank-details table,
+  .bank-details tbody,
+  .bank-details tr,
+  .bank-details th,
+  .bank-details td {
+    display: block;
+    width: 100%;
+  }
+  .bank-details th {
+    padding: 10px 0 0;
+    white-space: normal;
+  }
+  .bank-details td {
+    padding: 0 0 10px;
+    text-align: left;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .bank-details tr:first-child th {
+    padding-top: 0;
+  }
+  .bank-details tr + tr {
+    border-top: 1px solid $line;
+  }
+}
+
 
 // Bookstore (honesty box)
 .bookshop-fields {
