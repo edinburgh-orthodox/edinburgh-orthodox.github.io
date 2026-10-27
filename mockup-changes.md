@@ -1,13 +1,12 @@
 # Mockup changes: how the redesign differs from the current website
 
-A summary of the visual and layout changes made in the redesign, compared to the old WordPress
-site at https://edinburgh-orthodox.org.uk. The exact link names and final ordering are still to
-be decided; the items below describe the styling and structure only.
+A summary of the visual and layout changes shown in the `mockups/` folder, compared to the
+old WordPress site at https://edinburgh-orthodox.org.uk. The exact link names and final
+ordering are still to be decided; the items below describe the styling and structure only.
 
-The redesign was mocked up page by page before it was built. Those mockup files have since been
-removed, and the styling that ships lives in `edinburgh-orthodox/assets/css/`. The live site is
-at https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/. The page names below are
-kept as a record of the original mockups.
+The site has since been built from these mockups, so they are now a reference rather than the
+target. The styling that ships lives in `edinburgh-orthodox/assets/css/`, and the live site is
+at https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/.
 
 ## The pages
 

@@ -4,7 +4,7 @@
 
 This repo holds the website of the Orthodox Community of St Andrew, Edinburgh, plus the
 plans and tickets for it. The site is a static Hugo build in `edinburgh-orthodox/`. The
-plans are the proposal, the spec, and the tickets at the repo root.
+plans are the proposal, the spec, the tickets, and the visual mockups at the repo root.
 
 The site used to run on WordPress.com. It is being retired: the Hugo site is live on GitHub
 Pages now, and the WordPress subscription should stop once the domain points here (see issues
@@ -40,8 +40,8 @@ Pages now, and the WordPress subscription should stop once the domain points her
   `churches.yaml`, `wishlist.yaml`, `faq.yaml`.
 - `edinburgh-orthodox/layouts/` - templates, including the header, footer, and news list
   partials.
-- `edinburgh-orthodox/assets/css/` - SCSS partials, imported by `main.scss`. The design lives
-  in these partials.
+- `edinburgh-orthodox/assets/css/` - SCSS partials, imported by `main.scss`. The design
+  follows the mockups in `mockups/` at the repo root.
 - `hugo.toml` - site title, parameters, permalinks, and the navigation menu. Navigation links
   are defined once, in `menus.main`; a link with no page yet points at `#` and carries a TODO.
 
