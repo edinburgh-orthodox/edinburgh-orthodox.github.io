@@ -1,21 +1,39 @@
 {{/* Groups page-bundle images into a thumbnail grid with links to the originals.
-     Use positional parameters: gallery "one.jpg" "two.jpg" ... */}}
+     Use positional parameters: gallery "one.jpg" "two.jpg" ...
+     Portrait sets get a nine-by-sixteen grid instead of the square crops. */}}
 {{ $page := .Page }}
 {{ $count := len .Params }}
-{{ $feature := gt $count 6 }}
+{{ $features := gt $count 6 }}
 {{ $trio := eq $count 3 }}
 {{ $pair := eq $count 2 }}
-<div class="news-gallery{{ if $trio }} news-gallery--trio{{ end }}{{ if $pair }} news-gallery--pair{{ end }}">
+{{ $images := slice }}
+{{ range .Params }}
+    {{ with $page.Resources.Get . }}{{ $images = $images | append . }}{{ end }}
+{{ end }}
+{{ $portraitCount := 0 }}
+{{ range $images }}
+    {{ if gt .Height .Width }}{{ $portraitCount = add $portraitCount 1 }}{{ end }}
+{{ end }}
+{{ $portrait := and (gt (len $images) 0) (gt $portraitCount (div (len $images) 2)) }}
+<div class="news-gallery{{ if $trio }} news-gallery--trio{{ end }}{{ if $pair }} news-gallery--pair{{ end }}{{ if $portrait }} news-gallery--portrait{{ end }}">
     {{ range $i, $img := .Params }}
         {{ with $page.Resources.Get $img }}
             {{ $smallWebp := .Fill "320x240 Center webp q85" }}
             {{ $smallJpeg := .Fill "320x240 Center jpeg q85" }}
             {{ $largeWebp := .Fill "640x480 Center webp q85" }}
             {{ $largeJpeg := .Fill "640x480 Center jpeg q85" }}
-            <a class="news-gallery-item{{ if and (eq $i 0) (or $feature $trio) }} news-gallery-item--lead{{ end }}" href="{{ .RelPermalink }}" target="_blank" rel="noopener" aria-label="View full size image">
+            {{ $sizes := "(min-width: 768px) 160px, 45vw" }}
+            {{ if $portrait }}
+                {{ $smallWebp = .Fill "320x569 Center webp q85" }}
+                {{ $smallJpeg = .Fill "320x569 Center jpeg q85" }}
+                {{ $largeWebp = .Fill "640x1138 Center webp q85" }}
+                {{ $largeJpeg = .Fill "640x1138 Center jpeg q85" }}
+                {{ $sizes = "(min-width: 768px) 120px, 30vw" }}
+            {{ end }}
+            <a class="news-gallery-item{{ if and (eq $i 0) (or $features $trio) (not $portrait) }} news-gallery-item--lead{{ end }}" href="{{ .RelPermalink }}" target="_blank" rel="noopener" aria-label="View full size image">
                 <picture>
-                    <source type="image/webp" srcset="{{ $smallWebp.RelPermalink }} 320w, {{ $largeWebp.RelPermalink }} 640w" sizes="(min-width: 768px) 160px, 45vw">
-                    <img src="{{ $smallJpeg.RelPermalink }}" srcset="{{ $smallJpeg.RelPermalink }} 320w, {{ $largeJpeg.RelPermalink }} 640w" sizes="(min-width: 768px) 160px, 45vw" width="{{ $smallJpeg.Width }}" height="{{ $smallJpeg.Height }}" alt="" loading="lazy" decoding="async">
+                    <source type="image/webp" srcset="{{ $smallWebp.RelPermalink }} 320w, {{ $largeWebp.RelPermalink }} 640w" sizes="{{ $sizes }}">
+                    <img src="{{ $smallJpeg.RelPermalink }}" srcset="{{ $smallJpeg.RelPermalink }} 320w, {{ $largeJpeg.RelPermalink }} 640w" sizes="{{ $sizes }}" width="{{ $smallJpeg.Width }}" height="{{ $smallJpeg.Height }}" alt="" loading="lazy" decoding="async">
                 </picture>
             </a>
         {{ end }}

@@ -96,3 +96,11 @@ We worked in the attic of Simpson and Brown's studio at the Old Paintworks on Br
 The detail below, from the Pantocrator the group used as its exemplar, shows the kind of fine, luminous modelling the course set out to teach.
 
 ![A close detail of the face of the Pantocrator icon](pantocrator-face-detail.jpg)
+
+More photographs from the workshop.
+
+{{< gallery "father-ilie-drawing.jpg" "painting-the-base-coat.jpg" "brushing-the-base-coat.jpg" "painting-the-icon.jpg" "father-ilie-at-work.jpg" >}}
+
+Videos from the workshop.
+
+{{< videos "father-ilie-in-the-studio.mp4" "father-ilie-in-the-studio-poster.jpg" "Father Ilie in the studio." "guitar-in-the-studio.mp4" "guitar-in-the-studio-poster.jpg" "Music in the studio during the course." >}}
