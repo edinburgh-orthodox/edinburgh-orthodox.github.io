@@ -6,7 +6,7 @@ ordering are still to be decided; the items below describe the styling and struc
 
 The site has since been built from these mockups, so they are now a reference rather than the
 target. The styling that ships lives in `edinburgh-orthodox/assets/css/`, and the live site is
-at https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/.
+at https://edinburgh-orthodox.github.io/.
 
 ## The pages
 

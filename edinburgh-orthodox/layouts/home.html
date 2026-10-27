@@ -55,7 +55,7 @@
         </div>
 
         <section>
-            <h2><a href="{{ "/churches/" | relURL }}">Our Churches</a></h2>
+            <h2><a href="{{ "churches/" | relURL }}">Our Churches</a></h2>
             <div class="churches">
                 {{ range $churches }}
                     <a class="church" href="{{ .mapURL }}" target="_blank" rel="noopener">
@@ -65,14 +65,14 @@
                     </a>
                 {{ end }}
             </div>
-            <p><a href="{{ "/churches/" | relURL }}">See all our churches</a></p>
+            <p><a href="{{ "churches/" | relURL }}">See all our churches</a></p>
         </section>
 
         <section>
-            <h2><a href="{{ "/news/" | relURL }}">Recent News</a></h2>
+            <h2><a href="{{ "news/" | relURL }}">Recent News</a></h2>
             {{ $news := where site.RegularPages "Section" "news" }}
             {{ partial "news-list.html" (first 3 $news.ByDate.Reverse) }}
-            <p><a href="{{ "/news/" | relURL }}">All news</a></p>
+            <p><a href="{{ "news/" | relURL }}">All news</a></p>
         </section>
 
         {{/* TODO: Create content/history.md before treating the history link as complete. */}}
@@ -80,7 +80,7 @@
             <h2>Our History</h2>
             <div>
                 <p>The community has worshipped in Edinburgh since 1948, when Archpriest John Sotnikov, a Russian Chaplain of the Polish Army, began holding services here.</p>
-                <p><a href="{{ "/history/" | relURL }}">Find out more about our history</a>.</p>
+                <p><a href="{{ "history/" | relURL }}">Find out more about our history</a>.</p>
             </div>
         </section>
     </div>

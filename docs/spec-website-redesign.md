@@ -1,7 +1,7 @@
 # Website Redesign: Current Site and Remaining Work
 
 > **Status (October 2026).** The Hugo site is built and live at
-> https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/. A merge into `main`
+> https://edinburgh-orthodox.github.io/. A merge into `main`
 > publishes it. The production domain move and the end of the WordPress subscription are
 > tracked in issues #9 and #32.
 
