@@ -19,6 +19,7 @@
 
     <div class="wrap">
         {{/* TODO: Replace sample service data with Google Calendar and implement the copy-this-week action. */}}
+        <div class="home-split">
         <section class="cal-section">
             <h2>Weekly Services</h2>
             <div class="cal-wrap">
@@ -51,6 +52,7 @@
             <h2>Announcements</h2>
             <div class="announce">{{ range $announcements }}<p>{{ . }}</p>{{ end }}</div>
         </section>
+        </div>
 
         <section>
             <h2><a href="{{ "/churches/" | relURL }}">Our Churches</a></h2>
@@ -67,17 +69,19 @@
         </section>
 
         <section>
-            <h2><a href="{{ "/news/" | relURL }}">Recent news</a></h2>
+            <h2><a href="{{ "/news/" | relURL }}">Recent News</a></h2>
             {{ $news := where site.RegularPages "Section" "news" }}
             {{ partial "news-list.html" (first 3 $news.ByDate.Reverse) }}
             <p><a href="{{ "/news/" | relURL }}">All news</a></p>
         </section>
 
         {{/* TODO: Create content/history.md before treating the history link as complete. */}}
-        <section>
-            <h2>Our history</h2>
-            <p>The community has worshipped in Edinburgh since 1948, when Archpriest John Sotnikov, a Russian Chaplain of the Polish Army, began holding services here.</p>
-            <p><a href="{{ "/history/" | relURL }}">Find out more about our history</a>.</p>
+        <section class="home-history">
+            <h2>Our History</h2>
+            <div>
+                <p>The community has worshipped in Edinburgh since 1948, when Archpriest John Sotnikov, a Russian Chaplain of the Polish Army, began holding services here.</p>
+                <p><a href="{{ "/history/" | relURL }}">Find out more about our history</a>.</p>
+            </div>
         </section>
     </div>
 {{ end }}

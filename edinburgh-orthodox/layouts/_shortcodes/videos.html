@@ -1,0 +1,27 @@
+{{/* Renders one or more page-bundle videos in a two-column grid.
+     Use groups of three positional parameters: video, poster, caption.
+     Example: videos "clip.mp4" "clip-poster.jpg" "A caption" */}}
+{{ $page := .Page }}
+{{ $items := .Params }}
+{{ $count := len $items }}
+{{ if and (gt $count 0) (eq (mod $count 3) 0) }}
+    <div class="news-video-grid">
+        {{ range $group := seq (div $count 3) }}
+            {{ $i := mul (sub $group 1) 3 }}
+            {{ $src := index $items $i }}
+            {{ $posterName := index $items (add $i 1) }}
+            {{ $caption := index $items (add $i 2) }}
+            {{ with $page.Resources.Get $src }}
+                {{ $video := . }}
+                {{ $poster := $page.Resources.Get $posterName }}
+                <figure class="news-video">
+                    <video controls preload="metadata" playsinline{{ with $poster }} poster="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"{{ end }}{{ with $caption }} aria-label="{{ . }}"{{ end }}>
+                        <source src="{{ $video.RelPermalink }}" type="{{ $video.MediaType }}">
+                        <a href="{{ $video.RelPermalink }}">Download the video</a>
+                    </video>
+                    {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+                </figure>
+            {{ end }}
+        {{ end }}
+    </div>
+{{ end }}

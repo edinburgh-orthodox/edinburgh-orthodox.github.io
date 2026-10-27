@@ -33,8 +33,7 @@ The site it replaces is the WordPress.com site, which is being retired
 (issue [#32](https://github.com/edinburgh-orthodox/edinburgh-orthodox.org.uk/issues/32)). New
 work goes in this repository, not in the WordPress admin.
 
-The plans for the site live at the repo root: the proposal, the spec, the tickets, and the
-visual mockups that set the design.
+The plans for the site live at the repo root: the proposal, the spec, and the tickets.
 
 ## Run it locally
 
@@ -62,13 +61,12 @@ in `lefthook.yml` runs the same build.
 | `edinburgh-orthodox/content/news/` | News posts, newest first on the News page |
 | `edinburgh-orthodox/data/` | The weekly services, announcements, churches, wishlist, and FAQ |
 | `edinburgh-orthodox/layouts/` | The templates and partials |
-| `edinburgh-orthodox/assets/css/` | The SCSS partials, built from the mockups |
+| `edinburgh-orthodox/assets/css/` | The SCSS partials that define the design |
 | `edinburgh-orthodox/hugo.toml` | Site settings and the navigation menu |
 | `proposal.md` | The plan for the site, in plain English |
 | `docs/spec-website-redesign.md` | The needs, the decisions, and what is out of scope |
 | `CONTEXT.md` | The shared vocabulary (churches, weekly cycle, content tiers) |
 | `docs/adr/` | Decisions we have recorded |
-| `mockups/` | The visual mockups the design came from, kept for reference |
 | `examples/` | Example posts and the church-year calendar file |
 | `mockup-changes.md` | Every styling change, compared to the old site |
 

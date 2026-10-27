@@ -115,29 +115,27 @@ Here are the decisions already agreed, in plain terms.
 
 - **The FAQ page.** A page grouped by topic. We set up the structure now and write the questions and answers later.
 
-- **Pictures of how it should look.** See the "Visual mockup" section below for the link and the full summary of styling changes.
+- **Pictures of how it should look.** See the "Visual design" section below for the live site and the summary of styling changes.
 
-## Visual mockup
+## Visual design
 
-The design was worked out as a mockup of every page, and it is now built:
+The design was worked out page by page before the site was built:
 
 **https://edinburgh-orthodox.github.io/edinburgh-orthodox.org.uk/**
 
-The mockup files are plain HTML and CSS in `mockups/`, so anyone can open them in a browser to
-see the layout the site was built from. The styling itself now lives in
-`edinburgh-orthodox/assets/css/`. A page-by-page summary of the styling changes also lives in
+The mockup files have since been removed. The styling lives in
+`edinburgh-orthodox/assets/css/`, and a page-by-page summary of the styling changes is in
 `mockup-changes.md`; the main points are below.
 
 ### The pages
 
-- `index.html` - the redesigned homepage.
-- `cards.html` - a card-style variant of the homepage.
-- `churches.html` - "Our Churches", one block per building.
-- `wishlist.html` - giving toward items for the new church (live running total).
-- `faq.html` - frequently asked questions.
-- `donations.html` - giving, including the bookstore honesty-box.
-- `clergy.html` - the priests who serve the community (from the live site's details).
-- `news.html` - community news posts, newest first.
+- The homepage.
+- Our Churches, one block per building.
+- Giving toward items for the new church.
+- Frequently asked questions.
+- Giving, including the bookstore honesty-box.
+- The priests who serve the community.
+- Community news posts, newest first.
 
 ### Header (every page)
 

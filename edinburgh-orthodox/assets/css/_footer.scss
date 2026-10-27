@@ -1,13 +1,14 @@
 // Footer
 .site-foot {
   border-top: 1px solid $line;
-  padding: 32px 24px 40px;
+  padding: 32px 0 40px;
   color: $muted;
   font-size: 14px;
 }
 .site-foot .foot-inner {
-  max-width: 860px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
 }
 .site-foot .foot-links {
   display: flex;

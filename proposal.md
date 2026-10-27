@@ -120,11 +120,11 @@ We do this in stages:
 
 ## 7. Pictures of how it should look
 
-Simple HTML and CSS files, openable by double-click, kept in the `mockups/` folder as a
-visual guide. They cover every page: the homepage, a card-style variant, Our Churches,
-Wishlist, FAQ, Donations (with the bookstore honesty-box), Clergy, and News. They are the
-design the site was built from, and the styling now lives in `edinburgh-orthodox/assets/css/`.
-A summary of every styling change, compared to the old site, is in `mockup-changes.md`.
+The design was mocked up as simple HTML and CSS files that covered every page: the homepage, a
+card-style variant, Our Churches, Wishlist, FAQ, Donations (with the bookstore honesty-box),
+Clergy, and News. Those mockup files have since been removed because the site is built. The
+styling now lives in `edinburgh-orthodox/assets/css/`. A summary of every styling change,
+compared to the old site, is in `mockup-changes.md`.
 
 ## 8. The fasting symbol (still to decide)
 
@@ -156,5 +156,4 @@ big homepage redesign, but they can be done at the same time.
 - **Add alt text to the pictures.** The church and logo images have no text description,
   which also matters for people using screen readers. Add a short description to each.
 
-These smaller items are shown in the visual mockups in this folder, so the person doing the
-work can copy what they see.
+These smaller items were shown in the visual mockups for the design.

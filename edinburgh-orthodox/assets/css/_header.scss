@@ -63,6 +63,12 @@
   color: $crimson;
   text-decoration: none;
 }
+
+// The current page is marked in the brand red, with no box.
+.nav-row a[aria-current="page"],
+.more-menu a[aria-current="page"] {
+  color: $crimson;
+}
 .nav-row a:focus-visible,
 .more-menu a:focus-visible,
 .btn:focus-visible {
