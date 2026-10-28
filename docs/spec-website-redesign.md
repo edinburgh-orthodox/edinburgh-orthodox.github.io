@@ -20,11 +20,12 @@ The site is a static Hugo build in `edinburgh-orthodox/`. These pages are publis
 | Catechesis | Classes and how to join them |
 | Confessions | Walk-in times and how to make an appointment |
 | History | The community's story since 1948 |
+| Other Communities | Communities of the Ecumenical Patriarchate in Scotland and the north of England |
 
 On wide screens the header carries Our Churches, Donate, Clergy, News, and Contact. The More
-drawer holds Catechesis, Confessions, History, and Orthodox School; on smaller screens it
-holds every link. The FAQ content exists, but the page is still a draft and is not published.
-There is no Wishlist, bookstore, or Magazine page.
+drawer holds Catechesis, Confessions, Other Communities, History, and Orthodox School; on
+smaller screens it holds every link. The FAQ content exists, but the page is still a draft and
+is not published. There is no Wishlist, bookstore, or Magazine page.
 
 The footer repeats the menu links and shows the contact email, the charity number, and the
 constitution.
