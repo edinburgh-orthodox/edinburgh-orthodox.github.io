@@ -100,24 +100,6 @@
 .home-split .announce::-webkit-scrollbar-thumb:hover {
   background: rgba($crimson, 0.55);
 }
-.announce-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.announce-heading h2 {
-  margin-bottom: 16px;
-}
-.announce-hint {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: $crimson;
-  white-space: nowrap;
-}
 .home-split .announce:focus-visible {
   outline: 2px solid $crimson;
   outline-offset: 2px;
