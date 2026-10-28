@@ -74,9 +74,9 @@ checked by the editor when setting the week.
 _Avoid_: "saint of the day", "feast name"
 
 **Fasting symbol**:
-The mark shown on each calendar day, filled in from the church-year calendar file, then
-checked by the editor. The file uses five levels, which the site turns into symbols (the
-exact symbols are still to be decided, see the proposal):
+The mark planned for each calendar day, filled in from the church-year calendar file, then
+checked by the editor. The site currently shows the fasting level as text, without symbols.
+The file uses five levels (the exact symbols are still to be decided, see the proposal):
 
 | Level in the file           | How many days (2026 to 2027) |
 | --------------------------- | ---------------------------- |
@@ -86,7 +86,7 @@ exact symbols are still to be decided, see the proposal):
 | Fast free                   | 31                           |
 | Fast day, dairy, eggs, fish | 7 (the Cheesefare week)      |
 
-The site only shows the mark. It does not work out the fasting calendar itself, it reads it
+The site only shows the level. It does not work out the fasting calendar itself, it reads it
 from the file.
 _Avoid_: "fasting rule", "typikon", "fasting level"
 

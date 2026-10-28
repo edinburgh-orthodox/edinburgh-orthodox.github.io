@@ -18,8 +18,6 @@
       location: Meadow Lane
 - date: Wed 9
   note: Strict fast
-  mark: ✚
-  markClass: cross
   services:
     - time: Matins 7:30am
       location: Meadow Lane
@@ -33,8 +31,6 @@
       location: Meadow Lane
 - date: Fri 11
   note: Wine & oil
-  mark: 🍇
-  markClass: oil
   services:
     - time: Matins 7:30am
       location: Meadow Lane
@@ -42,8 +38,6 @@
       location: Meadow Lane
 - date: Sat 12
   note: Fish
-  mark: 🐟
-  markClass: fish
   services:
     - time: Matins 8:30am
       location: Chapel Street
