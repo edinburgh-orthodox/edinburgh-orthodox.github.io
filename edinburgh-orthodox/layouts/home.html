@@ -43,10 +43,7 @@
         </section>
 
         <section>
-            <div class="announce-heading">
-                <h2>Announcements</h2>
-                <span class="announce-hint">Scroll for more</span>
-            </div>
+            <h2>Announcements</h2>
             <div class="announce" tabindex="0" aria-label="Announcements">{{ range $announcements }}{{ $.RenderString (dict "display" "block") . }}{{ end }}</div>
         </section>
         </div>
