@@ -56,6 +56,9 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
+  .home-split .announce {
+    max-height: 520px;
+  }
   .more-menu {
     min-width: 220px;
   }
