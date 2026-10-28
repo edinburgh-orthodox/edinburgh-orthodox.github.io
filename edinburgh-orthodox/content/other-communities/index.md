@@ -12,6 +12,8 @@ description = "Communities of the Ecumenical Patriarchate in Scotland and the no
 - **Contact email:** [info@greekcommunitystluke.scot](mailto:info@greekcommunitystluke.scot)
 - **Website:** [greekcommunitystluke.scot](http://www.greekcommunitystluke.scot)
 
+{{< photo-grid "st-luke-glasgow-1.jpg" "st-luke-glasgow-2.jpg" "st-luke-glasgow-3.jpg" >}}
+
 ## The Greek Orthodox Parish of St Matthew, Aberdeen
 
 **Priest in charge:** Reverend Professor John Behr, D.Phil. (Oxon), D.D. (Melbourne), Regius Chair in Humanity at the University of Aberdeen.
@@ -21,6 +23,8 @@ description = "Communities of the Ecumenical Patriarchate in Scotland and the no
 - **Parish link:** [facebook.com/GreekOrthodoxChurch](https://www.facebook.com/GreekOrthodoxChurch)
 
 Worshipping at St Ninian's Church (696 King Street, AB24 1SJ), opposite the entrance road to Seaton Park and the Hillhead Student Halls. First Bus services 1, 2, 13, 20 and 40, and Stagecoach services to and from Ellon, Newburgh and Fraserburgh.
+
+{{< photo-grid "st-matthew-aberdeen-1.jpg" "st-matthew-aberdeen-2.jpg" "st-matthew-aberdeen-3.jpg" >}}
 
 ## The Highland Orthodox Community of St Columba
 
@@ -52,6 +56,8 @@ Visitors are welcome to visit the chapel in the summer months, but please contac
 
 - **Email:** [saintsunniva@gmail.com](mailto:saintsunniva@gmail.com)
 - **Postal address:** Saint Sunniva Hermitage, Feall, Haroldswick, Unst, Shetland ZE2 9ED
+
+{{< photo-grid "st-sunniva-1.jpg" "st-sunniva-2.jpg" "st-sunniva-3.jpg" "st-sunniva-4.jpg" >}}
 
 ## The Orthodox Community of the Mother of God and St Oswald, Northumberland
 

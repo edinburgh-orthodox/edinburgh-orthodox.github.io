@@ -30,7 +30,7 @@ a:visited {
 }
 
 // Links inside page content are underlined (distinct from nav/footer/buttons).
-.wrap a:not(.btn):not(.church):not(.item) {
+.wrap a:not(.btn):not(.church):not(.item):not(.photo-grid-link) {
   text-decoration: underline;
 }
 
