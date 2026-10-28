@@ -1,7 +1,9 @@
-{{/* Groups page-bundle images into a two-column grid that keeps each photo's
-     natural aspect ratio. Use positional parameters: photo-grid "one.jpg" ... */}}
+{{/* Groups page-bundle images into uniform tiles. A set of three runs across
+     three columns; other counts use two columns. Use positional parameters:
+     photo-grid "one.jpg" ... */}}
 {{ $page := .Page }}
-<div class="photo-grid">
+{{ $count := len .Params }}
+<div class="photo-grid{{ if eq $count 3 }} photo-grid--trio{{ end }}">
     {{ range .Params }}
         {{ with $page.Resources.Get . }}
             {{ $image := . }}
