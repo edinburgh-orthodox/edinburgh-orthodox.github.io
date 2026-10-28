@@ -142,19 +142,20 @@
   vertical-align: middle;
 }
 
-// Fasting marks
-.mark {
-  font-size: 0.85rem;
-  margin-left: 2px;
+// Sample data notice above the homepage services and announcements.
+.sample-note {
+  margin: 32px 0 0;
+  padding: 12px 16px;
+  border: 1px solid $line;
+  border-radius: 8px;
+  background: $cream;
+  color: $muted;
+  font-size: 15px;
+  text-align: center;
 }
-.mark.cross {
-  color: $crimson;
-}
-.mark.oil {
-  color: $oil;
-}
-.mark.fish {
-  color: $fish;
+.sample-note strong {
+  color: $ink;
+  font-weight: 600;
 }
 
 // Announcements

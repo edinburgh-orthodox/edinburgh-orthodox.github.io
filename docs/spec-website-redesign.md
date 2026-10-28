@@ -83,8 +83,8 @@ still open.
 Still to decide:
 
 - Whether the services file stays one week or becomes a normal week plus exceptions.
-- The final symbol for wine and oil, fish, and fast-free days. The current data uses temporary
-  emoji; strict fast uses a cross on red.
+- The final symbol for wine and oil, fish, and fast-free days. The markers are currently
+  removed; the fasting notes remain as text.
 - The wishlist items and prices.
 - The FAQ questions and answers.
 
