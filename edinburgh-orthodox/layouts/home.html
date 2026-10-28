@@ -62,6 +62,14 @@
             <p><a href="{{ "churches/" | relURL }}">See all our churches</a></p>
         </section>
 
+        <section class="support-band">
+            <div>
+                <h2>Support the Community</h2>
+                <p>The community is maintained entirely by the generosity of its members and friends. Your support helps keep the church open, care for our clergy, and continue our work in Edinburgh.</p>
+            </div>
+            <a class="btn" href="{{ "donations/" | relURL }}">Donate</a>
+        </section>
+
         <section>
             <h2><a href="{{ "news/" | relURL }}">Recent News</a></h2>
             {{ $news := where site.RegularPages "Section" "news" }}

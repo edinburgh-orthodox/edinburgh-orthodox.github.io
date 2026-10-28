@@ -11,7 +11,7 @@ The site is a static Hugo build in `edinburgh-orthodox/`. These pages are publis
 
 | Page | What a visitor finds |
 |------|----------------------|
-| Home | Welcome, the week's services, announcements, church cards, recent news, and a history summary |
+| Home | Welcome, the week's services, announcements, church cards, a support band, recent news, and a history summary |
 | Our Churches | The three buildings, their addresses, descriptions, map links, and the school link |
 | Clergy | The bishop and clergy, with email addresses and phone numbers |
 | News | All posts newest first, and individual posts with photographs and galleries |
@@ -38,8 +38,9 @@ The homepage shows, in order:
 2. Weekly Services, with a location for every service and the fasting and feast notes.
 3. Announcements.
 4. Our Churches, with a Google Maps link for each building and a link to the full page.
-5. Recent News, with the three newest posts.
-6. Our History, with a short summary and a link to the full page.
+5. Support the Community, with a Donate button.
+6. Recent News, with the three newest posts.
+7. Our History, with a short summary and a link to the full page.
 
 The week comes from a sample in `data/services.yaml`. The homepage says the website is a work
 in progress and information may not be up to date. The copy-this-week button does not exist
