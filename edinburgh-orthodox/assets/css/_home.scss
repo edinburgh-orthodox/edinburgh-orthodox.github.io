@@ -153,11 +153,15 @@
 }
 .support-band h2 {
   margin: 0 0 8px;
+  font-size: 26px;
+  line-height: 1.2;
 }
 .support-band p {
   max-width: 720px;
   margin: 0;
   color: $muted;
+  font-size: 15px;
+  line-height: 1.6;
 }
 .support-band .btn {
   flex-shrink: 0;
@@ -168,6 +172,12 @@
     align-items: flex-start;
     gap: 16px;
     padding: 20px;
+  }
+  .support-band h2 {
+    font-size: 22px;
+  }
+  .support-band .btn {
+    width: 100%;
   }
 }
 
