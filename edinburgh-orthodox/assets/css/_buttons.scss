@@ -16,6 +16,16 @@
   color: $crimson;
   border: 1px solid $crimson;
 }
+// The global link colours override the button text on visited and hovered
+// links, so restore them here.
+.btn:visited,
+.btn:hover {
+  color: #fff;
+}
+.btn.ghost:visited,
+.btn.ghost:hover {
+  color: $crimson;
+}
 .btn[aria-disabled="true"] {
   opacity: 0.6;
   cursor: not-allowed;
