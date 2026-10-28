@@ -1,58 +1,55 @@
-# TODO: Replace this sample week with current, confirmed information.
+# Sample week for 26 October to 1 November 2026. Replace with current, confirmed information.
 # TODO: Decide whether this file remains the source or is generated from Google Calendar.
-- date: Mon 7
-  note: Forefeast of the Nativity
+- date: Mon 26
+  note: St Demetrios the Myrrhstreamer of Thessaloniki
+  services:
+    - time: Matins 6:00am
+      location: Meadow Lane
+    - time: Divine Liturgy 7:00am
+      location: Meadow Lane
+    - time: Vespers 6:30pm
+      location: Meadow Lane
+    - time: Supplicatory Canon to the Mother of God 7:00pm
+      location: Meadow Lane
+- date: Tue 27
   services:
     - time: Matins 7:30am
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-    - time: Supplicatory Canon 7:00pm
-      location: Meadow Lane
-- date: Tue 8
-  note: Nativity of the Mother of God
+- date: Wed 28
   services:
     - time: Matins 7:30am
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-- date: Wed 9
-  note: Strict fast
+- date: Thu 29
   services:
     - time: Matins 7:30am
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-- date: Thu 10
+- date: Fri 30
   services:
     - time: Matins 7:30am
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-- date: Fri 11
-  note: Wine & oil
+- date: Sat 31
+  note: Apostles Stachys, Amplias, Urban, Narcissus, Apelles & Aristobulus of the Seventy
   services:
-    - time: Matins 7:30am
+    - time: Matins 8:30am
+      location: Meadow Lane
+    - time: Divine Liturgy 10:00am
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-- date: Sat 12
-  note: Fish
+- date: Sun 1
+  note: Wonderworkers and Unmercenaries Cosmas and Damian of Mesopotamia and their Mother, St Theodota & St Cadfan of Bardsey
   services:
     - time: Matins 8:30am
       location: Chapel Street
     - time: Divine Liturgy 10:00am
-      location: Chapel Street
-    - time: Vespers 6:30pm
-      location: Meadow Lane
-- date: Sun 13
-  note: Archangel Michael & St Bega
-  services:
-    - time: Matins 8:30am
-      location: Chapel Street
-    - time: Divine Liturgy 10:00am
-      location: Chapel Street
-    - time: Catechesis 4:00pm
       location: Chapel Street
     - time: Vespers 6:30pm
       location: Meadow Lane

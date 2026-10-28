@@ -40,9 +40,9 @@ The homepage shows, in order:
 5. Recent News, with the three newest posts.
 6. Our History, with a short summary and a link to the full page.
 
-The week comes from a sample in `data/services.yaml`. The note under the list saying it is
-edited in Google Calendar is a placeholder and is not true yet. The copy-this-week button does
-not exist yet either.
+The week comes from a sample in `data/services.yaml`. The homepage says the website is a work
+in progress and information may not be up to date. The copy-this-week button does not exist
+yet.
 
 ### What is not live yet
 
