@@ -66,6 +66,11 @@ enableRobotsTXT = true
   weight = 70
 
 [[menus.main]]
+  name = "Other Communities"
+  pageRef = "/other-communities"
+  weight = 80
+
+[[menus.main]]
   name = "History"
   pageRef = "/history"
   weight = 90
