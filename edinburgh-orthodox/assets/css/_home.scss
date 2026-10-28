@@ -92,6 +92,34 @@
 .home-split .announce p {
   margin: 0 0 12px;
 }
+.home-split .announce h3 {
+  margin: 18px 0 6px;
+  font-family: $font-display;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+  color: $crimson;
+}
+.home-split .announce h3:first-of-type {
+  margin-top: 12px;
+}
+.home-split .announce em {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $muted;
+}
+.home-split .announce > p:first-child em {
+  color: $crimson;
+}
+.home-split .announce a {
+  color: $crimson;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .home-split .announce p:last-child {
   margin-bottom: 0;
 }
