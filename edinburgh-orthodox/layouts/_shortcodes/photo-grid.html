@@ -1,0 +1,17 @@
+{{/* Groups page-bundle images into a two-column grid that keeps each photo's
+     natural aspect ratio. Use positional parameters: photo-grid "one.jpg" ... */}}
+{{ $page := .Page }}
+<div class="photo-grid">
+    {{ range .Params }}
+        {{ with $page.Resources.Get . }}
+            {{ $image := . }}
+            {{ $thumb := $image }}
+            {{ if gt $image.Width 640 }}
+                {{ $thumb = $image.Resize "640x" }}
+            {{ end }}
+            <a class="photo-grid-link" href="{{ $image.RelPermalink }}" target="_blank" rel="noopener" aria-label="View full size image">
+                <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy" decoding="async">
+            </a>
+        {{ end }}
+    {{ end }}
+</div>
