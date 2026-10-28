@@ -17,17 +17,23 @@
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
+    - time: Catechetical Class led by Bishop Raphael 7:30pm
+      location: Meadow Lane
 - date: Wed 28
   services:
     - time: Matins 7:30am
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
+    - time: "Choir Class: Christmas carols rehearsal 7:30pm"
+      location: Meadow Lane
 - date: Thu 29
   services:
     - time: Matins 7:30am
       location: Meadow Lane
     - time: Vespers 6:30pm
+      location: Meadow Lane
+    - time: "Youth Fellowship: Dr Zinaida Lewczuk, Digital Addictions 7:30pm"
       location: Meadow Lane
 - date: Fri 30
   services:

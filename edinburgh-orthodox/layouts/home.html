@@ -27,17 +27,13 @@
                 <div class="cal">
                     {{ range $services }}
                         <div class="cal-day">
-                            <div class="cal-date">
-                                {{ .date }}
-                                {{ with .note }}
-                                    <small>
-                                        {{ . }}
-                                    </small>
-                                {{ end }}
-                            </div>
+                            <div class="cal-date">{{ .date }}</div>
                             <div class="cal-body">
                                 {{ range .services }}
                                     <span class="svc">{{ .time }}<span class="loc">({{ .location }})</span></span>
+                                {{ end }}
+                                {{ with .note }}
+                                    <small class="cal-note">{{ . }}</small>
                                 {{ end }}
                             </div>
                         </div>
@@ -48,7 +44,7 @@
 
         <section>
             <h2>Announcements</h2>
-            <div class="announce">{{ range $announcements }}<p>{{ . }}</p>{{ end }}</div>
+            <div class="announce" tabindex="0" aria-label="Announcements">{{ range $announcements }}<p>{{ . }}</p>{{ end }}</div>
         </section>
         </div>
 
