@@ -40,4 +40,32 @@ function initializeNavigation() {
     });
 }
 
+function initializeHeaderScroll() {
+    const header = document.querySelector(".site-head");
+
+    if (!(header instanceof HTMLElement)) {
+        return;
+    }
+
+    let queued = false;
+
+    const update = () => {
+        header.classList.toggle("is-scrolled", window.scrollY > 12);
+        queued = false;
+    };
+
+    const onScroll = () => {
+        if (queued) {
+            return;
+        }
+
+        queued = true;
+        window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+}
+
 initializeNavigation();
+initializeHeaderScroll();
