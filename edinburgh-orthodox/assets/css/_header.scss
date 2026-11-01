@@ -96,6 +96,11 @@
 .search-trigger:hover {
   background: #f3efe6;
 }
+// Pagefind returns focus here when the dialog closes; the ring is hidden for
+// that returned focus, but tabbing to the button still shows it.
+.search-trigger.is-focus-returned {
+  --pf-outline-focus: transparent;
+}
 .site-nav {
   position: relative;
   display: flex;
