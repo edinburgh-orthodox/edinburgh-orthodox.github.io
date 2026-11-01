@@ -83,8 +83,18 @@
   align-items: center;
   gap: 20px;
 }
+// Borderless icon button: the magnifier alone, with a soft tint on hover.
 .search-trigger {
+  --pf-border: transparent;
+  --pf-border-focus: transparent;
+  --pf-background: transparent;
+  --pf-hover: #f3efe6;
+  --pf-border-radius: 999px;
+  border-radius: 999px;
   flex-shrink: 0;
+}
+.search-trigger:hover {
+  background: #f3efe6;
 }
 .site-nav {
   position: relative;
