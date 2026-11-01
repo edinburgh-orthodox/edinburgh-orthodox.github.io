@@ -18,6 +18,11 @@
                     {{ end }}
                 </ul>
 
+                {{/* Icon button that opens the Pagefind modal, placed after the
+                     links so it sits beside the menu button. The component supplies
+                     the accessible label, focus handling, and the Cmd/Ctrl+K shortcut. */}}
+                <pagefind-modal-trigger compact hide-shortcut class="search-trigger"></pagefind-modal-trigger>
+
                 <button class="nav-toggle" aria-label="More links" aria-expanded="false" type="button">
                     <span></span>
                     <span></span>
@@ -37,3 +42,5 @@
         </div>
     </div>
 </header>
+
+<pagefind-modal></pagefind-modal>

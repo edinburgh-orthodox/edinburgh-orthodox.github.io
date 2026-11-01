@@ -8,6 +8,10 @@
         <link rel="icon" type="image/jpeg" href="{{ "images/red-logo-church.jpg?v=2" | relURL }}">
         <link rel="shortcut icon" type="image/jpeg" href="{{ "images/red-logo-church.jpg?v=2" | relURL }}">
         <link rel="apple-touch-icon" href="{{ "images/red-logo-church.jpg?v=2" | relURL }}">
+        {{/* Pagefind assets are generated after the Hugo build, so they cannot be
+             fingerprinted. Load them first so the site CSS can override the
+             --pf-* defaults that Pagefind sets on :root. */}}
+        <link rel="stylesheet" href="{{ "pagefind/pagefind-component-ui.css" | relURL }}">
         {{ $styles := resources.Get "css/main.scss" | css.Sass | minify | fingerprint }}
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
         <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
@@ -15,7 +19,9 @@
     <body>
         {{ partial "header.html" . }}
 
-        <main>
+        {{/* data-pagefind-body limits the search index to page content, so the
+             navigation and footer text stays out of the search results. */}}
+        <main data-pagefind-body>
             {{ block "main" . }}{{ end }}
         </main>
 
@@ -23,6 +29,7 @@
 
         {{ $script := resources.Get "js/navigation.js" | js.Build (dict "minify" true "targetPath" "js/navigation.js") | fingerprint }}
         <script type="module" src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>
+        <script type="module" src="{{ "pagefind/pagefind-component-ui.js" | relURL }}"></script>
         {{ block "scripts" . }}{{ end }}
     </body>
 </html>

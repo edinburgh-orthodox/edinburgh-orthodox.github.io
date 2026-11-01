@@ -42,6 +42,9 @@ jobs:
       - name: Build
         run: hugo --source edinburgh-orthodox --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
+      - name: Build search index
+        run: npx -y pagefind@1.6.0 --site edinburgh-orthodox/public
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

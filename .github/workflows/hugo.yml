@@ -31,3 +31,6 @@ jobs:
 
       - name: Build
         run: hugo --source edinburgh-orthodox --minify
+
+      - name: Build search index
+        run: npx -y pagefind@1.6.0 --site edinburgh-orthodox/public
