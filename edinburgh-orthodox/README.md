@@ -27,6 +27,30 @@ the site and publishes it to GitHub Pages. Every pull request runs
 `.github/workflows/hugo.yml`, which builds the site and nothing else. The pre-commit hook in
 `lefthook.yml` runs the same build.
 
+## Search
+
+The top bar has a search button that opens a Pagefind dialog. Pagefind reads the finished site
+in `public/` and writes a search index to `public/pagefind/`, so both workflows run it straight
+after the Hugo build:
+
+```sh
+npx -y pagefind@1.6.0 --site edinburgh-orthodox/public
+```
+
+Nothing runs on a server. Visitors download the index and the search happens in the browser,
+which is why it works on the free GitHub Pages and Cloudflare Pages plans.
+
+The index is not part of `hugo server`, so search cannot work in the normal preview. To try it
+locally, build to disk and let Pagefind serve the result:
+
+```sh
+hugo --source edinburgh-orthodox --minify -d edinburgh-orthodox/public
+npx -y pagefind@1.6.0 --site edinburgh-orthodox/public --serve
+```
+
+Open `http://localhost:1414/`. Bump the Pagefind version in both workflows together when you
+upgrade it, and keep the pin in the two places in step.
+
 ## Add a news post
 
 Add a Markdown file directly under `content/news/`, with TOML front matter:

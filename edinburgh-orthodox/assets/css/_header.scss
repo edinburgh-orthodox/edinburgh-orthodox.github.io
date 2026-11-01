@@ -1,3 +1,20 @@
+// Pagefind resets its own components, so CSS variables are the only way to
+// theme them. Pagefind's defaults live on :root and its stylesheet loads first,
+// which lets these win.
+:root {
+  --pf-font: #{$font-sans};
+  --pf-text: #{$ink};
+  --pf-text-secondary: #{$muted};
+  --pf-background: #{$cream};
+  --pf-border: #{$line};
+  --pf-border-focus: #{$crimson};
+  --pf-outline-focus: #{$crimson};
+  --pf-hover: #f3efe6;
+  --pf-mark: #{$crimson};
+  --pf-border-radius: 8px;
+  --pf-modal-backdrop: #{rgba($ink, 0.35)};
+}
+
 // Header: paper background, site title left with a small logo, nav right.
 .site-head {
   position: sticky;
@@ -65,6 +82,9 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+.search-trigger {
+  flex-shrink: 0;
 }
 .site-nav {
   position: relative;

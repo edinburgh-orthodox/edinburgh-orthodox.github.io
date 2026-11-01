@@ -10,6 +10,10 @@
         </a>
 
         <div class="nav-area">
+            {{/* Icon button that opens the Pagefind modal. The component supplies
+                 the accessible label, focus handling, and the Cmd/Ctrl+K shortcut. */}}
+            <pagefind-modal-trigger compact hide-shortcut class="search-trigger"></pagefind-modal-trigger>
+
             <nav class="site-nav" aria-label="Main navigation">
                 <ul class="nav-row">
                     {{ range $primaryLinks }}
@@ -37,3 +41,5 @@
         </div>
     </div>
 </header>
+
+<pagefind-modal></pagefind-modal>

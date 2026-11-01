@@ -6,6 +6,13 @@
   }
 }
 @media (max-width: 560px) {
+  // Keep the brand on two lines once the search button joins the top bar.
+  .site-head .inner {
+    gap: 16px;
+  }
+  .nav-area {
+    gap: 10px;
+  }
   .brand {
     font-size: 20px;
     white-space: normal;
