@@ -17,6 +17,13 @@ body {
   padding: 0 24px;
 }
 
+// The header is sticky, so fragment links (search sub-results, in-page links)
+// would otherwise land the target underneath it. 96px clears the header (75px
+// desktop, 79px on phones) with a little breathing room.
+:target {
+  scroll-margin-top: 96px;
+}
+
 // All links: ink, no underline. Specific rules below override where needed.
 a {
   color: $ink;
