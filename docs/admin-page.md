@@ -18,8 +18,12 @@ The browser keeps the token on that device until you click Sign out.
 
 1. Change the dates, the feast notes, and the services. Enter the service or event name, pick
    the time, and choose Meadow Lane, Chapel Street, or Craigmillar Park.
-2. Change the announcements. Each box holds one block and can contain Markdown.
+2. Change the announcements. Set Week of to the first day of the week, and the page writes it
+   as the first line. Each other box holds one block and can contain Markdown.
 3. Click Save changes.
+
+The toolbar under the form says what changed since the last save, when the notices last ran,
+and how many days and blocks the WhatsApp text holds. Save is greyed out when nothing changed.
 
 Save writes both files as two commits on `main`. The site rebuilds, and the homepage shows
 the new week.
