@@ -45,7 +45,7 @@ The summary shows the Facebook post ID and the Mailchimp campaign ID after a rea
 
 ```bash
 python3 -m venv /tmp/notices-venv
-/tmp/notices-venv/bin/pip install pyyaml
+/tmp/notices-venv/bin/pip install pyyaml markdown
 DRY_RUN=true GITHUB_STEP_SUMMARY=/tmp/notices.md /tmp/notices-venv/bin/python scripts/send_weekly_notices.py
 ```
 

@@ -12,12 +12,14 @@ import base64
 import html
 import json
 import os
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
 
+import markdown
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +31,16 @@ FACEBOOK_API_VERSION = os.environ.get("FACEBOOK_API_VERSION", "v24.0")
 def load_yaml(path: Path) -> Any:
     with path.open(encoding="utf-8") as handle:
         return yaml.safe_load(handle) or []
+
+
+def plain_text(text: str) -> str:
+    """Drop Markdown heading marks, which the plain text channels would show literally."""
+    return re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE)
+
+
+def render_markdown(text: str) -> str:
+    """Render an announcement block. Escape first so raw HTML in the data stays inert."""
+    return markdown.markdown(html.escape(text))
 
 
 def format_text(services: list[dict], announcements: list[str]) -> str:
@@ -50,7 +62,7 @@ def format_text(services: list[dict], announcements: list[str]) -> str:
     if announcements:
         lines.extend(["ANNOUNCEMENTS", ""])
         for item in announcements:
-            lines.append(str(item).strip())
+            lines.append(plain_text(str(item).strip()))
             lines.append("")
     lines.append(SITE_URL)
     return "\n".join(lines).strip() + "\n"
@@ -81,10 +93,8 @@ def format_html(services: list[dict], announcements: list[str]) -> str:
             parts.append(f'<p style="margin: 2px 0;">{time}{location_html}</p>')
     if announcements:
         parts.append('<h2 style="font-size: 18px; margin: 24px 0 4px;">Announcements</h2>')
-        parts.append('<ul style="margin: 0; padding-left: 20px;">')
         for item in announcements:
-            parts.append(f"<li>{html.escape(str(item).strip())}</li>")
-        parts.append("</ul>")
+            parts.append(render_markdown(str(item).strip()))
     parts.append(
         f'<p style="margin: 24px 0 0;"><a href="{SITE_URL}" style="color: #7b1e26;">{SITE_URL}</a></p>'
     )

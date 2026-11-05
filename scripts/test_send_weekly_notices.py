@@ -45,6 +45,20 @@ class FormattingTests(unittest.TestCase):
         self.assertIn("Meadow &lt;Lane&gt;", html)
         self.assertNotIn("<script>", html)
 
+    def test_html_renders_markdown(self):
+        html = notices.format_html(
+            [], ["### Confessions", "*Travel* by car, [call](tel:+441234)"]
+        )
+        self.assertIn("<h3>Confessions</h3>", html)
+        self.assertIn("<em>Travel</em> by car", html)
+        self.assertIn('<a href="tel:+441234">call</a>', html)
+
+    def test_text_drops_heading_marks(self):
+        text = notices.format_text([], ["### Confessions", "*Travel* by car"])
+        self.assertIn("\nConfessions\n", text)
+        self.assertNotIn("###", text)
+        self.assertIn("*Travel* by car", text)
+
 
 if __name__ == "__main__":
     unittest.main()

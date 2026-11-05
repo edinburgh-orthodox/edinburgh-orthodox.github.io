@@ -23,14 +23,17 @@
   main { max-width: 900px; margin: 0 auto; padding: 20px; }
   h2 { font: 20px/1.2 Georgia, serif; color: var(--crimson); margin: 28px 0 10px; }
   label { display: block; font-size: 13px; color: var(--muted); }
-  input[type=text], textarea { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font: inherit; }
+  input[type=text], select, textarea { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font: inherit; }
+  input[type=time], input[type=date] { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font: inherit; font-size: 17px; font-variant-numeric: tabular-nums; }
+  input[type=time]::-webkit-calendar-picker-indicator,
+  input[type=date]::-webkit-calendar-picker-indicator { opacity: .55; cursor: pointer; }
   textarea { resize: vertical; }
   button { font: inherit; padding: 8px 14px; border: 1px solid var(--crimson); border-radius: 4px; background: var(--crimson); color: #fff; cursor: pointer; }
   button:disabled { opacity: .5; cursor: default; }
   button.ghost { background: none; color: var(--muted); border-color: var(--line); padding: 4px 9px; font-size: 13px; }
   fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
   .day-head { display: grid; grid-template-columns: 120px 1fr auto; gap: 10px; align-items: end; }
-  .svc-row { display: grid; grid-template-columns: 1fr 120px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
+  .svc-row { display: grid; grid-template-columns: 1fr 132px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
   .day button[data-add="svc"] { margin-top: 12px; }
   .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
   @media (max-width: 620px) {
@@ -219,6 +222,11 @@ async function writeFile(file, text, sha) {
   return data.content.sha;
 }
 
+// Mirrors plain_text() in scripts/send_weekly_notices.py. Change both together.
+function plainText(text) {
+  return String(text).replace(/^#{1,6}\s+/gm, '');
+}
+
 // Mirrors format_text() in scripts/send_weekly_notices.py. Change both together.
 function formatText(services, announcements) {
   const lines = ['SERVICES THIS WEEK', ''];
@@ -237,7 +245,7 @@ function formatText(services, announcements) {
   if (announcements.length) {
     lines.push('ANNOUNCEMENTS', '');
     for (const item of announcements) {
-      lines.push(String(item).trim());
+      lines.push(plainText(String(item).trim()));
       lines.push('');
     }
   }
