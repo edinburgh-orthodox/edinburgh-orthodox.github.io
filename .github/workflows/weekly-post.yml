@@ -31,13 +31,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install dependencies
-        run: pip install pyyaml markdown
       - name: Test formatting
-        run: python -m unittest discover -s scripts -p "test_*.py"
+        run: |
+          node scripts/test_admin_logic.js
+          node scripts/test_send_weekly_post.js
       - name: Post to Facebook and Mailchimp
         env:
           DRY_RUN: ${{ inputs.dry_run }}
@@ -50,4 +47,4 @@ jobs:
           MAILCHIMP_AUDIENCE_ID: ${{ secrets.MAILCHIMP_AUDIENCE_ID }}
           MAILCHIMP_REPLY_TO: ${{ secrets.MAILCHIMP_REPLY_TO }}
           MAILCHIMP_FROM_NAME: "St Andrew's Orthodox Church"
-        run: python scripts/send_weekly_post.py
+        run: node scripts/send_weekly_post.js

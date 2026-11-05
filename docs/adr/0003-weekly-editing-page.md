@@ -16,9 +16,8 @@ Considered options: Sveltia CMS, recorded in issue #41, and Sveltia plus a separ
 page. Both leave the send and the copy in GitHub's interface.
 
 Consequences: each editor needs a GitHub account and a token with write access, so the page
-suits one or two people and not a group of volunteers. The WhatsApp text is built twice, in
-`formatText` in `edinburgh-orthodox/static/admin/admin-logic.js` and in `format_text` in
-`scripts/send_weekly_post.py`, so the two functions must change together.
+suits one or two people and not a group of volunteers. The page and the sender share
+`edinburgh-orthodox/static/admin/admin-logic.js`, so the WhatsApp text is built once.
 
 Saves commit straight to `main` with no review step. That is deliberate: the owner removed
 branch protection for this page so the weekly edit does not wait for a second person. It is an

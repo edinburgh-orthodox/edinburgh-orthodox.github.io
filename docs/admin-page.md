@@ -53,9 +53,8 @@ files, not the page.
 - Send uses both channels every time. If Facebook succeeds and Mailchimp fails, run the
   action from GitHub with one channel selected, so the channel that worked does not post
   twice.
-- The page builds the WhatsApp text with `formatText` in
-  `edinburgh-orthodox/static/admin/admin-logic.js`. `scripts/send_weekly_post.py` builds the
-  same text with `format_text`. Change both functions together.
-- `js-yaml` 4.1.0 is vendored at `edinburgh-orthodox/static/admin/js-yaml.min.js`, so the page
+- The page and `scripts/send_weekly_post.js` both use
+  `edinburgh-orthodox/static/admin/admin-logic.js`, so the WhatsApp text is built once.
+- `js-yaml` 4.1.0 is vendored at `edinburgh-orthodox/static/admin/js-yaml.js`, so the page
   loads no script from a CDN.
 - If GitHub rejects the token, create a new one and sign in again.

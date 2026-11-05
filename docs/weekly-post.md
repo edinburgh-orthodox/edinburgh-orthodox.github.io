@@ -59,9 +59,7 @@ step fails, the summary shows the error and the text is still there for a manual
 ## Local dry run
 
 ```bash
-python3 -m venv /tmp/post-venv
-/tmp/post-venv/bin/pip install pyyaml markdown
-DRY_RUN=true GITHUB_STEP_SUMMARY=/tmp/post.md /tmp/post-venv/bin/python scripts/send_weekly_post.py
+DRY_RUN=true GITHUB_STEP_SUMMARY=/tmp/post.md node scripts/send_weekly_post.js
 ```
 
 Open `/tmp/post.md` to check the formatted text.

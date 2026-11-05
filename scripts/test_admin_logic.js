@@ -6,7 +6,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const logic = require(path.join(root, 'edinburgh-orthodox/static/admin/admin-logic.js'));
-const yaml = require(path.join(root, 'edinburgh-orthodox/static/admin/js-yaml.min.js'));
+const yaml = require(path.join(root, 'edinburgh-orthodox/static/admin/js-yaml.js'));
 
 const data = path.join(root, 'edinburgh-orthodox/data');
 const services = yaml.load(fs.readFileSync(path.join(data, 'services.yaml'), 'utf8'));
