@@ -6,11 +6,20 @@
 <meta name="robots" content="noindex">
 <title>Weekly notices admin</title>
 <style>
-  :root { --crimson: #7b1e26; --ink: #1c1a17; --muted: #6b635c; --line: #dcd6cf; --bg: #fbf9f6; }
+  :root { --paper: #faf7f2; --crimson: #7b1e26; --ink: #1c1a17; --muted: #6b635c; --line: #e4ddd2; }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
-  header { background: var(--crimson); color: #fff; padding: 14px 20px; }
-  header h1 { margin: 0; font: 22px/1.2 Georgia, serif; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .site-head { background: var(--paper); border-bottom: 1px solid var(--line); }
+  .site-head .inner { max-width: 1200px; margin: 0 auto; padding: 16px 24px; }
+  .brand { display: flex; align-items: center; gap: 10px; margin: 0; font: 600 26px/1.2 "Iowan Old Style", Palatino, Georgia, serif; color: var(--ink); letter-spacing: -0.4px; }
+  .brand img { height: 36px; width: auto; border-radius: 50%; }
+  .brand-text { display: block; }
+  .admin-tag { color: var(--crimson); font-size: 16px; letter-spacing: 1px; white-space: nowrap; }
+  @media (max-width: 620px) {
+    .brand { font-size: 20px; gap: 8px; }
+    .brand img { height: 30px; }
+    .admin-tag { font-size: 13px; letter-spacing: .5px; }
+  }
   main { max-width: 900px; margin: 0 auto; padding: 20px; }
   h2 { font: 20px/1.2 Georgia, serif; color: var(--crimson); margin: 28px 0 10px; }
   label { display: block; font-size: 13px; color: var(--muted); }
@@ -21,12 +30,13 @@
   button.ghost { background: none; color: var(--muted); border-color: var(--line); padding: 4px 9px; font-size: 13px; }
   fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
   .day-head { display: grid; grid-template-columns: 120px 1fr auto; gap: 10px; align-items: end; }
-  .svc-row { display: grid; grid-template-columns: 1fr 200px auto; gap: 8px; margin-top: 8px; align-items: end; }
+  .svc-row { display: grid; grid-template-columns: 1fr 120px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
+  .day button[data-add="svc"] { margin-top: 12px; }
   .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
   @media (max-width: 620px) {
     .day-head { grid-template-columns: 1fr; }
     .day-head button { justify-self: start; }
-    .svc-row { grid-template-columns: 1fr auto; }
+    .svc-row { grid-template-columns: 1fr 1fr auto; }
     .svc-row label:first-child { grid-column: 1 / -1; }
   }
   .toolbar { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 12px; margin-top: 30px; background: #fff; border-top: 1px solid var(--line); }
@@ -40,7 +50,14 @@
 </style>
 </head>
 <body data-pagefind-ignore>
-<header><h1>Weekly notices admin</h1></header>
+<header class="site-head">
+  <div class="inner">
+    <h1 class="brand">
+      <img src="../images/red-logo-church.jpg" alt="">
+      <span class="brand-text">St Andrew's Orthodox Church <span class="admin-tag">- ADMIN</span></span>
+    </h1>
+  </div>
+</header>
 <main>
 
 <div id="login" hidden>
@@ -76,11 +93,6 @@
   </details>
 </div>
 
-<datalist id="locations">
-  <option value="Meadow Lane"></option>
-  <option value="Chapel Street"></option>
-  <option value="Craigmillar Park"></option>
-</datalist>
 
 <!-- js-yaml 4.1.0, MIT. Vendored so the page does not depend on a CDN. -->
 <script src="js-yaml.min.js"></script>
@@ -202,10 +214,41 @@ function formatText(services, announcements) {
   return lines.join('\n').trim() + '\n';
 }
 
+const PLACES = ['Meadow Lane', 'Chapel Street', 'Craigmillar Park'];
+const TIME_RE = /\s(\d{1,2}):(\d{2})\s*(am|pm)?$/i;
+
+// The data files keep the service name and the time in one string, for example
+// "Matins 7:30am". The form edits them separately.
+function splitService(text) {
+  const value = String(text || '').trim();
+  const match = value.match(TIME_RE);
+  if (!match) return { name: value, time: '' };
+  let hours = Number(match[1]);
+  const meridiem = (match[3] || '').toLowerCase();
+  if (meridiem === 'pm' && hours < 12) hours += 12;
+  if (meridiem === 'am' && hours === 12) hours = 0;
+  return { name: value.slice(0, match.index).trim(), time: String(hours).padStart(2, '0') + ':' + match[2] };
+}
+
+function formatTime(value) {
+  if (!value) return '';
+  const [hours, minutes] = value.split(':').map(Number);
+  return (hours % 12 || 12) + ':' + String(minutes).padStart(2, '0') + (hours >= 12 ? 'pm' : 'am');
+}
+
 function serviceRow(service = {}) {
+  const parts = splitService(service.time);
+  const places = !service.location || PLACES.includes(service.location) ? PLACES : [service.location, ...PLACES];
+  const place = h('select', { 'data-f': 'location' });
+  for (const option of places) {
+    const node = h('option', { value: option }, option);
+    if (option === service.location) node.selected = true;
+    place.append(node);
+  }
   return h('div', { class: 'svc-row' },
-    h('label', {}, 'Service ', h('input', { type: 'text', 'data-f': 'time', value: service.time || '', placeholder: 'Matins 7:30am' })),
-    h('label', {}, 'Place ', h('input', { type: 'text', 'data-f': 'location', value: service.location || '', list: 'locations', placeholder: 'Meadow Lane' })),
+    h('label', {}, 'Service or Event ', h('input', { type: 'text', 'data-f': 'name', value: parts.name, placeholder: 'Matins' })),
+    h('label', {}, 'Time ', h('input', { type: 'time', 'data-f': 'clock', value: parts.time })),
+    h('label', {}, 'Place ', place),
     h('button', { type: 'button', class: 'ghost', 'data-remove': 'svc', title: 'Remove this service' }, 'Remove')
   );
 }
@@ -216,7 +259,7 @@ function dayCard(day = {}) {
   return h('fieldset', { class: 'day' },
     h('div', { class: 'day-head' },
       h('label', {}, 'Date ', h('input', { type: 'text', 'data-f': 'date', value: day.date || '', placeholder: 'Mon 26' })),
-      h('label', {}, 'Feast or note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '', placeholder: 'St Demetrios' })),
+      h('label', {}, 'Feast or Note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '' })),
       h('button', { type: 'button', class: 'ghost', 'data-remove': 'day' }, 'Remove day')
     ),
     services,
@@ -225,7 +268,7 @@ function dayCard(day = {}) {
 }
 
 function announcementBox(text = '') {
-  const box = h('textarea', { rows: '4' });
+  const box = h('textarea', { rows: '6' });
   box.value = text;
   return h('div', { class: 'ann-row' }, box,
     h('button', { type: 'button', class: 'ghost', 'data-remove': 'ann' }, 'Remove'));
@@ -236,10 +279,12 @@ function readServices() {
     const day = { date: card.querySelector('[data-f=date]').value.trim() };
     const note = card.querySelector('[data-f=note]').value.trim();
     if (note) day.note = note;
-    day.services = [...card.querySelectorAll('.svc-row')].map((row) => ({
-      time: row.querySelector('[data-f=time]').value.trim(),
-      location: row.querySelector('[data-f=location]').value.trim()
-    })).filter((service) => service.time);
+    day.services = [...card.querySelectorAll('.svc-row')].map((row) => {
+      const name = row.querySelector('[data-f=name]').value.trim();
+      const clock = row.querySelector('[data-f=clock]').value;
+      const time = clock ? (name ? name + ' ' + formatTime(clock) : formatTime(clock)) : name;
+      return { time, location: row.querySelector('[data-f=location]').value };
+    }).filter((service) => service.time);
     return day;
   }).filter((day) => day.date || day.services.length);
 }

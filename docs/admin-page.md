@@ -16,8 +16,8 @@ The browser keeps the token on that device until you click Sign out.
 
 ## Update the week
 
-1. Change the dates, the feast notes, and the services. The place field suggests Meadow Lane,
-   Chapel Street, and Craigmillar Park, and accepts any text.
+1. Change the dates, the feast notes, and the services. Enter the service or event name, pick
+   the time, and choose Meadow Lane, Chapel Street, or Craigmillar Park.
 2. Change the announcements. Each box holds one block and can contain Markdown.
 3. Click Save changes.
 
