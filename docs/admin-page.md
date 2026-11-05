@@ -38,8 +38,8 @@ files, not the page.
 
 ## Limits
 
-- Send needs `.github/workflows/weekly-notices.yml` on `main`. Before pull request #43
-  merges, the page reports "No send action on main yet".
+- Send needs `.github/workflows/weekly-notices.yml` on `main`. This page ships in the same
+  pull request, so the action is there after the first deploy.
 - Send uses both channels every time. If Facebook succeeds and Mailchimp fails, run the
   action from GitHub with one channel selected, so the channel that worked does not post
   twice.

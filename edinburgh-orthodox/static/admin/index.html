@@ -39,8 +39,12 @@
     .svc-row { grid-template-columns: 1fr 1fr auto; }
     .svc-row label:first-child { grid-column: 1 / -1; }
   }
-  .toolbar { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 12px; margin-top: 30px; background: #fff; border-top: 1px solid var(--line); }
+  .toolbar { position: sticky; bottom: 0; padding: 12px; margin-top: 30px; background: #fff; border-top: 1px solid var(--line); }
+  .toolbar .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .toolbar label { display: inline-flex; gap: 6px; align-items: center; color: var(--ink); font-size: 15px; }
+  .hints { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+  .week-start { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .week-start input { width: auto; }
   #status { min-height: 1.5em; font-size: 14px; }
   #status.ok { color: #2f6b3a; }
   #status.err { color: #a32020; }
@@ -76,15 +80,26 @@
   <p><button type="button" class="ghost" data-add="day">+ Add day</button></p>
 
   <h2>Announcements</h2>
+  <p class="week-start">
+    <label>Week of <input type="date" id="week-start"></label>
+    <span class="note">This sets the first line of the announcements.</span>
+  </p>
   <div id="announcements"></div>
   <p><button type="button" class="ghost" data-add="ann">+ Add announcement</button></p>
 
   <div class="toolbar">
-    <button id="save">Save changes</button>
-    <label><input type="checkbox" id="dry" checked> Dry run</label>
-    <button id="send">Send notices</button>
-    <button id="copy">Copy for WhatsApp</button>
-    <button id="signout" class="ghost">Sign out</button>
+    <div class="actions">
+      <button id="save">Save changes</button>
+      <label><input type="checkbox" id="dry" checked> Dry run</label>
+      <button id="send">Send notices</button>
+      <button id="copy">Copy for WhatsApp</button>
+      <button id="signout" class="ghost">Sign out</button>
+    </div>
+    <p class="hints">
+      <span id="save-hint"></span>
+      <span id="send-hint"></span>
+      <span id="copy-hint"></span>
+    </p>
   </div>
   <p id="status" role="status" aria-live="polite"></p>
   <details id="preview-wrap" hidden>
@@ -113,6 +128,7 @@ let shas = {};
 let dirty = false;
 let busy = false;
 let action = 0;
+let baseline = { services: [], announcements: [] };
 
 const $ = (sel) => document.querySelector(sel);
 const statusEl = () => $('#status');
@@ -134,7 +150,22 @@ function setStatus(message, kind = '', id = null) {
   el.className = kind;
 }
 
-function markDirty() { dirty = true; }
+function updateHints() {
+  const services = readServices();
+  const announcements = readAnnouncements();
+  const before = new Map(baseline.services.map((day) => [day.date, JSON.stringify(day)]));
+  const after = new Map(services.map((day) => [day.date, JSON.stringify(day)]));
+  const days = [...new Set([...before.keys(), ...after.keys()])].filter((date) => before.get(date) !== after.get(date));
+  const announcementsChanged = JSON.stringify(announcements) !== JSON.stringify(baseline.announcements);
+  dirty = days.length > 0 || announcementsChanged;
+
+  const parts = [];
+  if (days.length) parts.push(days.length <= 2 ? days.join(' and ') : days.length + ' days');
+  if (announcementsChanged) parts.push('the announcements');
+  $('#save-hint').textContent = parts.length ? 'Unsaved changes: ' + parts.join(' and ') + '.' : 'All changes saved.';
+  $('#save').disabled = busy || !parts.length;
+  $('#copy-hint').textContent = `Copies ${services.length} days and ${announcements.length} announcement blocks.`;
+}
 
 async function gh(path, options = {}) {
   const response = await fetch(API + path, {
@@ -236,6 +267,26 @@ function formatTime(value) {
   return (hours % 12 || 12) + ':' + String(minutes).padStart(2, '0') + (hours >= 12 ? 'pm' : 'am');
 }
 
+const WEEK_RE = /^\*Week of (.+?)\*$/;
+const pad = (value) => String(value).padStart(2, '0');
+
+// The week date is the first announcement block, "*Week of 25 October 2026*".
+// The date picker sets that line and keeps it out of the text boxes.
+function toISO(text) {
+  const date = new Date(text);
+  if (Number.isNaN(date.getTime())) return '';
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function longDate(iso) {
+  const [year, month, day] = iso.split('-').map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function weekHeader(iso) {
+  return '*Week of ' + longDate(iso) + '*';
+}
+
 function serviceRow(service = {}) {
   const parts = splitService(service.time);
   const places = !service.location || PLACES.includes(service.location) ? PLACES : [service.location, ...PLACES];
@@ -290,20 +341,47 @@ function readServices() {
 }
 
 function readAnnouncements() {
-  return [...document.querySelectorAll('#announcements textarea')]
+  const items = [...document.querySelectorAll('#announcements textarea')]
     .map((box) => box.value.trim())
     .filter(Boolean);
+  const iso = $('#week-start').value;
+  return iso ? [weekHeader(iso), ...items] : items;
 }
 
 function render(data) {
-  const services = $('#services');
-  const announcements = $('#announcements');
-  services.textContent = '';
-  announcements.textContent = '';
+  const servicesBox = $('#services');
+  const announcementsBox = $('#announcements');
+  servicesBox.textContent = '';
+  announcementsBox.textContent = '';
   const days = Array.isArray(data.services) ? data.services : [];
-  for (const day of days) services.append(dayCard(day));
-  if (!days.length) services.append(dayCard());
-  for (const item of data.announcements || []) announcements.append(announcementBox(String(item)));
+  for (const day of days) servicesBox.append(dayCard(day));
+  if (!days.length) servicesBox.append(dayCard());
+
+  const list = Array.isArray(data.announcements) ? data.announcements : [];
+  const first = String(list[0] || '').trim();
+  const match = first.match(WEEK_RE);
+  $('#week-start').value = match ? toISO(match[1]) : '';
+  for (const item of match ? list.slice(1) : list) announcementsBox.append(announcementBox(String(item)));
+}
+
+async function loadRuns() {
+  const hint = $('#send-hint');
+  try {
+    const data = await gh(`/repos/${REPO}/actions/workflows/${WORKFLOW}/runs?per_page=5`);
+    const last = (data.workflow_runs || [])[0];
+    if (!last) {
+      hint.textContent = 'No sends yet.';
+      return;
+    }
+    const title = last.display_title || '';
+    const kind = /dry/i.test(title) ? 'dry run' : /live/i.test(title) ? 'send' : 'run';
+    const when = new Date(last.created_at).toLocaleString('en-GB', {
+      day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+    hint.textContent = `Last ${kind}: ${when}, ${last.conclusion || last.status}.`;
+  } catch (error) {
+    hint.textContent = error.status === 404 ? 'Send action not on main yet.' : 'Could not read past runs.';
+  }
 }
 
 async function load() {
@@ -313,10 +391,12 @@ async function load() {
     services: jsyaml.load(services.text) || [],
     announcements: jsyaml.load(announcements.text) || []
   });
-  dirty = false;
+  baseline = { services: readServices(), announcements: readAnnouncements() };
   $('#login').hidden = true;
   $('#editor').hidden = false;
   setStatus('');
+  updateHints();
+  loadRuns();
 }
 
 async function save() {
@@ -329,13 +409,13 @@ async function save() {
     const announcementsText = FILES.announcements.header + jsyaml.dump(readAnnouncements(), { lineWidth: 80, noRefs: true });
     shas.services = await writeFile(FILES.services, servicesText, shas.services);
     shas.announcements = await writeFile(FILES.announcements, announcementsText, shas.announcements);
-    dirty = false;
+    baseline = { services: readServices(), announcements: readAnnouncements() };
     setStatus('Saved. The site rebuilds in about a minute.', 'ok', id);
   } catch (error) {
     setStatus('Save failed: ' + error.message, 'err', id);
   } finally {
     busy = false;
-    $('#save').disabled = false;
+    updateHints();
   }
 }
 
@@ -375,13 +455,15 @@ async function send() {
     setStatus(dryRun
       ? 'Dry run started. Check the summary: ' + run
       : 'Sending. The summary lists what was posted: ' + run, 'ok', id);
+    setTimeout(loadRuns, 15000);
   } catch (error) {
     setStatus(error.status === 404
-      ? 'No send action on main yet. Merge pull request #43 first.'
+      ? 'No send action on main yet. Deploy this page first.'
       : 'Send failed: ' + error.message, 'err', id);
   } finally {
     busy = false;
     $('#send').disabled = false;
+    updateHints();
   }
 }
 
@@ -392,28 +474,29 @@ $('#services').addEventListener('click', (event) => {
   else if (button.dataset.remove === 'svc') button.closest('.svc-row').remove();
   else if (button.dataset.remove === 'day') button.closest('.day').remove();
   else return;
-  markDirty();
+  updateHints();
 });
 
 $('#announcements').addEventListener('click', (event) => {
   if (event.target.closest('[data-remove=ann]')) {
     event.target.closest('.ann-row').remove();
-    markDirty();
+    updateHints();
   }
 });
 
 document.querySelector('main').addEventListener('click', (event) => {
   if (event.target.closest('[data-add=day]')) {
     $('#services').append(dayCard());
-    markDirty();
+    updateHints();
   } else if (event.target.closest('[data-add=ann]')) {
     $('#announcements').append(announcementBox());
-    markDirty();
+    updateHints();
   }
 });
 
-document.querySelector('#services').addEventListener('input', markDirty);
-document.querySelector('#announcements').addEventListener('input', markDirty);
+document.querySelector('#services').addEventListener('input', updateHints);
+document.querySelector('#announcements').addEventListener('input', updateHints);
+document.querySelector('#week-start').addEventListener('input', updateHints);
 
 $('#save').addEventListener('click', save);
 $('#copy').addEventListener('click', copy);

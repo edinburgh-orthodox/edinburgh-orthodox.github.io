@@ -1,6 +1,6 @@
 # Weekly notices action
 
-`.github/workflows/weekly-notices.yml` posts the week's services and announcements to the Facebook Page and Mailchimp. It is started by hand, so nothing is sent until an editor runs it.
+`.github/workflows/weekly-notices.yml` posts the week's services and announcements to the Facebook Page and Mailchimp. An editor starts it from `/admin/` or by hand in GitHub, so nothing is sent until someone runs it.
 
 The action reads `edinburgh-orthodox/data/services.yaml` and `edinburgh-orthodox/data/announcements.yaml`, builds a plain text notice and an HTML email, and writes a prefilled WhatsApp link and the text to the workflow summary.
 
@@ -29,14 +29,15 @@ The Mailchimp campaign sends to the whole audience in `MAILCHIMP_AUDIENCE_ID`. U
 
 ## Run it
 
-1. Confirm the week in `data/services.yaml` and `data/announcements.yaml` is real. The files still contain sample text.
-2. Open the repository on GitHub.
-3. Go to Actions, then "Send weekly notices".
-4. Click "Run workflow" on the `main` branch.
-5. Leave "Preview only" ticked for the first run.
-6. Open the job summary. Check the text and the WhatsApp link.
-7. Run it again with "Preview only" unticked to post to Facebook and send the Mailchimp campaign. Choose `both`, or one channel if a previous run failed after the other succeeded.
-8. Open the WhatsApp link in the summary and send it to the group.
+1. Confirm the week in `data/services.yaml` and `data/announcements.yaml` is real.
+2. Open `/admin/` and click Send notices. To run it by hand instead, open the repository on
+   GitHub, go to Actions, then "Send weekly notices", then "Run workflow" on `main`.
+3. Leave Dry run ticked for the first run.
+4. Open the job summary. Check the text, the email, and the WhatsApp link.
+5. Clear Dry run and send again to post to Facebook and send the Mailchimp campaign. Choose
+   one channel if a previous run failed after the other succeeded.
+6. Click Copy for WhatsApp in `/admin/`, or open the link in the summary, and send it to the
+   group.
 
 The summary shows the Facebook post ID and the Mailchimp campaign ID after a real run. If a step fails, the summary shows the error and the text is still there for a manual send.
 
