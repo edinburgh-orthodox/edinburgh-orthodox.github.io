@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Send the weekly services and announcements to Facebook and Mailchimp.
+"""Send the weekly post to Facebook and Mailchimp.
 
-The script reads the Hugo data files, builds a plain text and HTML notice, and
+The script reads the Hugo data files, builds a plain text and HTML post, and
 posts it. WhatsApp has no official API for group posts, so the script writes
 the text and a wa.me link to the GitHub Actions job summary for a manual send.
 """
@@ -16,6 +16,7 @@ import re
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -33,9 +34,46 @@ def load_yaml(path: Path) -> Any:
         return yaml.safe_load(handle) or []
 
 
+LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+
+
 def plain_text(text: str) -> str:
-    """Drop Markdown heading marks, which the plain text channels would show literally."""
-    return re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE)
+    """Plain text for Facebook, WhatsApp, and the clipboard.
+
+    Headings and links do not render there, but bold and italic marks do. Drop
+    the heading marks and flatten links. A telephone or email link keeps its
+    label, and a web link keeps the address in brackets because the label alone
+    loses the destination.
+    """
+
+    def link(match: re.Match[str]) -> str:
+        label, url = match.group(1), match.group(2)
+        if url.startswith(("tel:", "mailto:")):
+            return label
+        return f"{label} ({url})"
+
+    return LINK_RE.sub(link, re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE))
+
+
+def ordinal(day: int) -> str:
+    if 11 <= day % 100 <= 13:
+        return f"{day}th"
+    return f"{day}{ {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th') }"
+
+
+def format_day(value: str) -> str:
+    """Show an ISO date as the site does, for example 2026-11-03 as Tue 3rd Nov."""
+    try:
+        parsed = date.fromisoformat(str(value).strip())
+    except ValueError:
+        return str(value).strip()
+    return f"{parsed:%a} {ordinal(parsed.day)} {parsed:%b}"
+
+
+def day_heading(day: dict) -> str:
+    heading = format_day(day.get("date", ""))
+    note = str(day.get("note", "")).strip()
+    return f"{heading} - {note}" if note else heading
 
 
 def render_markdown(text: str) -> str:
@@ -46,14 +84,7 @@ def render_markdown(text: str) -> str:
 def format_text(services: list[dict], announcements: list[str]) -> str:
     lines = ["SERVICES THIS WEEK", ""]
     for day in services:
-        heading = str(day.get("date", "")).strip()
-        note = str(day.get("note", "")).strip()
-        mark = str(day.get("mark", "")).strip()
-        if note:
-            heading = f"{heading} - {note}"
-        if mark:
-            heading = f"{heading} {mark}"
-        lines.append(heading)
+        lines.append(day_heading(day))
         for service in day.get("services") or []:
             time = str(service.get("time", "")).strip()
             location = str(service.get("location", "")).strip()
@@ -74,14 +105,9 @@ def format_html(services: list[dict], announcements: list[str]) -> str:
         '<h1 style="color: #7b1e26; font-size: 26px; margin: 0 0 16px;">Services this week</h1>',
     ]
     for day in services:
-        heading = html.escape(str(day.get("date", "")).strip())
-        note = str(day.get("note", "")).strip()
-        mark = str(day.get("mark", "")).strip()
-        if note:
-            heading += " - " + html.escape(note)
-        if mark:
-            heading += " " + html.escape(mark)
-        parts.append(f'<h2 style="font-size: 18px; margin: 24px 0 4px;">{heading}</h2>')
+        parts.append(
+            f'<h2 style="font-size: 18px; margin: 24px 0 4px;">{html.escape(day_heading(day))}</h2>'
+        )
         for service in day.get("services") or []:
             time = html.escape(str(service.get("time", "")).strip())
             location = str(service.get("location", "")).strip()
@@ -199,14 +225,14 @@ def main() -> None:
     announcements = load_yaml(DATA / "announcements.yaml")
     text = format_text(services, announcements)
     subject = (
-        f"Services and notices for the week beginning {services[0]['date']}"
+        f"Services and announcements for the week beginning {format_day(services[0]['date'])}"
         if services
-        else "Weekly notices"
+        else "Weekly post"
     )
     html_body = format_html(services, announcements)
     whatsapp_url = "https://wa.me/?text=" + urllib.parse.quote(text, safe="")
     summary = [
-        "## Weekly notices",
+        "## Weekly post",
         "",
         "### WhatsApp",
         "",
@@ -252,7 +278,7 @@ def main() -> None:
         raise
 
     write_summary(summary)
-    print("Dry run complete." if dry_run else "Weekly notices sent.")
+    print("Dry run complete." if dry_run else "Weekly post sent.")
 
 
 if __name__ == "__main__":

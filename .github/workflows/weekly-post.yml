@@ -1,5 +1,5 @@
-name: Send weekly notices
-run-name: Weekly notices ${{ inputs.dry_run && 'dry run' || 'live send' }}
+name: Send weekly post
+run-name: Weekly post ${{ inputs.dry_run && 'dry run' || 'live send' }}
 
 on:
   workflow_dispatch:
@@ -21,12 +21,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: weekly-notices
+  group: weekly-post
   cancel-in-progress: false
 
 jobs:
   send:
-    name: Send notices
+    name: Send weekly post
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -50,4 +50,4 @@ jobs:
           MAILCHIMP_AUDIENCE_ID: ${{ secrets.MAILCHIMP_AUDIENCE_ID }}
           MAILCHIMP_REPLY_TO: ${{ secrets.MAILCHIMP_REPLY_TO }}
           MAILCHIMP_FROM_NAME: "St Andrew's Orthodox Church"
-        run: python scripts/send_weekly_notices.py
+        run: python scripts/send_weekly_post.py

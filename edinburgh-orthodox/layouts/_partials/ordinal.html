@@ -1,0 +1,7 @@
+{{- $n := int . -}}
+{{- $suffix := "th" -}}
+{{- if or (lt $n 11) (gt $n 13) -}}
+  {{- $last := mod $n 10 -}}
+  {{- if eq $last 1 }}{{ $suffix = "st" }}{{ else if eq $last 2 }}{{ $suffix = "nd" }}{{ else if eq $last 3 }}{{ $suffix = "rd" }}{{ end -}}
+{{- end -}}
+{{- $n }}{{ $suffix -}}

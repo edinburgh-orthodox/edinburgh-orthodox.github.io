@@ -66,6 +66,9 @@ in `lefthook.yml` runs the same build.
 | `edinburgh-orthodox/layouts/` | The templates and partials |
 | `edinburgh-orthodox/assets/css/` | The SCSS partials, built from the mockups |
 | `edinburgh-orthodox/hugo.toml` | Site settings and the navigation menu |
+| `edinburgh-orthodox/static/admin/` | The editor page at `/admin/` |
+| `scripts/` | The weekly post sender and its tests |
+| `.github/workflows/` | The build, deploy, and weekly post actions |
 | `proposal.md` | The plan for the site, in plain English |
 | `docs/spec-website-redesign.md` | The live pages, the remaining work, and what is out of scope |
 | `CONTEXT.md` | The shared vocabulary (churches, weekly cycle, content tiers) |

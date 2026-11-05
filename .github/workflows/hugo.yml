@@ -29,6 +29,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-hugo-images-
 
+      - name: Test admin logic
+        run: node scripts/test_admin_logic.js
+
       - name: Build
         run: hugo --source edinburgh-orthodox --minify
 

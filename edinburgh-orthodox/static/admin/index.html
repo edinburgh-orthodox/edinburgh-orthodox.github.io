@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Weekly notices admin</title>
+<title>Weekly post admin</title>
 <style>
   :root { --paper: #faf7f2; --crimson: #7b1e26; --ink: #1c1a17; --muted: #6b635c; --line: #e4ddd2; }
   * { box-sizing: border-box; }
@@ -33,7 +33,7 @@
   button:disabled { opacity: .5; cursor: default; }
   button.ghost { background: none; color: var(--muted); border-color: var(--line); padding: 4px 9px; font-size: 13px; }
   fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
-  .day-head { display: grid; grid-template-columns: 120px 1fr auto; gap: 10px; align-items: end; }
+  .day-head { display: grid; grid-template-columns: 160px 1fr auto; gap: 10px; align-items: end; }
   .svc-row { display: grid; grid-template-columns: 1fr 120px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
   .day button[data-add="svc"] { margin-top: 12px; }
   .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
@@ -95,7 +95,7 @@
     <div class="actions">
       <button id="save">Save changes</button>
       <label><input type="checkbox" id="dry" checked> Dry run</label>
-      <button id="send">Send notices</button>
+      <button id="send">Send weekly post</button>
       <button id="copy">Copy for WhatsApp</button>
       <button id="signout" class="ghost">Sign out</button>
     </div>
@@ -115,13 +115,13 @@
 
 <!-- js-yaml 4.1.0, MIT. Vendored so the page does not depend on a CDN. -->
 <script src="js-yaml.min.js"></script>
+<script src="admin-logic.js"></script>
 <script>
 const REPO = 'edinburgh-orthodox/edinburgh-orthodox.github.io';
 const BRANCH = 'main';
-const WORKFLOW = 'weekly-notices.yml';
+const WORKFLOW = 'weekly-post.yml';
 const API = 'https://api.github.com';
-const SITE_URL = 'https://edinburgh-orthodox.org.uk';
-const TOKEN_KEY = 'weekly-notices-token';
+const TOKEN_KEY = 'weekly-post-token';
 const FILES = {
   services: { path: 'edinburgh-orthodox/data/services.yaml', header: '# Weekly services, edited at /admin/.\n' },
   announcements: { path: 'edinburgh-orthodox/data/announcements.yaml', header: '# Weekly announcements, edited at /admin/.\n' }
@@ -223,59 +223,6 @@ async function writeFile(file, text, sha) {
   return data.content.sha;
 }
 
-// Mirrors plain_text() in scripts/send_weekly_notices.py. Change both together.
-function plainText(text) {
-  return String(text).replace(/^#{1,6}\s+/gm, '');
-}
-
-// Mirrors format_text() in scripts/send_weekly_notices.py. Change both together.
-function formatText(services, announcements) {
-  const lines = ['SERVICES THIS WEEK', ''];
-  for (const day of services) {
-    let heading = String(day.date || '').trim();
-    const note = String(day.note || '').trim();
-    if (note) heading += ' - ' + note;
-    lines.push(heading);
-    for (const service of day.services || []) {
-      const time = String(service.time || '').trim();
-      const location = String(service.location || '').trim();
-      lines.push(location ? `${time} (${location})` : time);
-    }
-    lines.push('');
-  }
-  if (announcements.length) {
-    lines.push('ANNOUNCEMENTS', '');
-    for (const item of announcements) {
-      lines.push(plainText(String(item).trim()));
-      lines.push('');
-    }
-  }
-  lines.push(SITE_URL);
-  return lines.join('\n').trim() + '\n';
-}
-
-const PLACES = ['Meadow Lane', 'Chapel Street', 'Craigmillar Park'];
-const TIME_RE = /\s(\d{1,2}):(\d{2})\s*(am|pm)?$/i;
-
-// The data files keep the service name and the time in one string, for example
-// "Matins 7:30am". The form edits them separately.
-function splitService(text) {
-  const value = String(text || '').trim();
-  const match = value.match(TIME_RE);
-  if (!match) return { name: value, time: '' };
-  let hours = Number(match[1]);
-  const meridiem = (match[3] || '').toLowerCase();
-  if (meridiem === 'pm' && hours < 12) hours += 12;
-  if (meridiem === 'am' && hours === 12) hours = 0;
-  return { name: value.slice(0, match.index).trim(), time: String(hours).padStart(2, '0') + ':' + match[2] };
-}
-
-function formatTime(value) {
-  if (!value) return '';
-  const [hours, minutes] = value.split(':').map(Number);
-  return (hours % 12 || 12) + ':' + String(minutes).padStart(2, '0') + (hours >= 12 ? 'pm' : 'am');
-}
-
 const WEEK_RE = /^\*Week of (.+?)\*$/;
 const pad = (value) => String(value).padStart(2, '0');
 
@@ -294,6 +241,17 @@ function longDate(iso) {
 
 function weekHeader(iso) {
   return '*Week of ' + longDate(iso) + '*';
+}
+
+// A new day starts on the day after the last one, or after the week start.
+function nextDayDate() {
+  const cards = document.querySelectorAll('#services .day');
+  const last = cards.length ? cards[cards.length - 1].querySelector('[data-f=date]').value : '';
+  const start = last || $('#week-start').value;
+  if (!start) return '';
+  const date = new Date(start + 'T00:00:00');
+  date.setDate(date.getDate() + 1);
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
 function serviceRow(service = {}) {
@@ -318,7 +276,7 @@ function dayCard(day = {}) {
   for (const service of day.services || []) services.append(serviceRow(service));
   return h('fieldset', { class: 'day' },
     h('div', { class: 'day-head' },
-      h('label', {}, 'Date ', h('input', { type: 'text', 'data-f': 'date', value: day.date || '', placeholder: 'Mon 26' })),
+      h('label', {}, 'Date ', h('input', { type: 'date', 'data-f': 'date', value: isoDate(day.date) })),
       h('label', {}, 'Feast or Note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '' })),
       h('button', { type: 'button', class: 'ghost', 'data-remove': 'day' }, 'Remove day')
     ),
@@ -342,8 +300,7 @@ function readServices() {
     day.services = [...card.querySelectorAll('.svc-row')].map((row) => {
       const name = row.querySelector('[data-f=name]').value.trim();
       const clock = row.querySelector('[data-f=clock]').value;
-      const time = clock ? (name ? name + ' ' + formatTime(clock) : formatTime(clock)) : name;
-      return { time, location: row.querySelector('[data-f=location]').value };
+      return { time: joinService(name, clock), location: row.querySelector('[data-f=location]').value };
     }).filter((service) => service.time);
     return day;
   }).filter((day) => day.date || day.services.length);
@@ -495,7 +452,7 @@ $('#announcements').addEventListener('click', (event) => {
 
 document.querySelector('main').addEventListener('click', (event) => {
   if (event.target.closest('[data-add=day]')) {
-    $('#services').append(dayCard());
+    $('#services').append(dayCard({ date: nextDayDate() }));
     updateHints();
   } else if (event.target.closest('[data-add=ann]')) {
     $('#announcements').append(announcementBox());
@@ -532,9 +489,9 @@ $('#signin').addEventListener('click', async () => {
   }
 });
 
-if (!window.jsyaml) {
+if (!window.jsyaml || typeof window.formatText !== 'function') {
   $('#login').hidden = false;
-  $('#login-status').textContent = 'Could not load the YAML library. Reload the page.';
+  $('#login-status').textContent = 'Could not load the page scripts. Reload the page.';
 } else if (!token) {
   $('#login').hidden = false;
 } else {

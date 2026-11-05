@@ -43,17 +43,16 @@ The homepage shows, in order:
 7. Our History, with a short summary and a link to the full page.
 
 The week comes from a sample in `data/services.yaml`. The homepage says the website is a work
-in progress and information may not be up to date. The copy-this-week button does not exist
-yet.
+in progress and information may not be up to date. The week and the announcements are edited at
+`/admin/`, which also copies the post for WhatsApp (ADR-0003).
 
 ### What is not live yet
 
-- The live services calendar and the copy-this-week button.
+- A calendar view beyond the current week.
 - The Wishlist and the bookstore honesty box.
 - The FAQ page.
-- The newsletter and the Mailchimp connection.
+- The newsletter signup.
 - The quick links at the top of the homepage.
-- Automatic posting to WhatsApp, Facebook, and email.
 - The domain move and the end of the WordPress subscription.
 
 ## The Original Brief
@@ -70,15 +69,15 @@ still open.
 ## Remaining Work
 
 - **The weekly services and announcements.** The pages still use one sample week in
-  `data/services.yaml` and the announcement strings in `data/announcements.yaml`. Issue #1
-  covers the original calendar plan. Issue #41 proposes Sveltia CMS instead, so that editors
-  can change the week through a form at `/admin/` and open a pull request. If #41 is accepted,
-  it replaces the Google Calendar plan in the original brief.
+  `data/services.yaml` and the announcement strings in `data/announcements.yaml`. Editors
+  change both at `/admin/` and send the post from the same page (ADR-0003). The forms are
+  built; filling in the real week and setting the send secrets are still to do.
 - **The Wishlist and bookstore.** The data and the page sections are prepared, but both are
   commented out until the Square checkout is confirmed. See issue #8.
 - **The FAQ page.** The content is in `content/faq.md` with `draft = true`. See issue #6.
-- **The newsletter and posting.** The copy button, Mailchimp, and automatic posting are not
-  built. The current weekly post examples are in `examples/`.
+- **The send secrets.** The weekly post action posts to Facebook and Mailchimp, but the six
+  repository secrets are not set, so a real send fails until they are. See
+  `docs/weekly-post.md`. The current examples are in `examples/`.
 - **The domain and WordPress.** The Hugo site is live on GitHub Pages. The domain move and
   the WordPress cancellation are tracked in issues #9 and #32.
 
@@ -99,7 +98,7 @@ Still to decide:
   `edinburgh-orthodox/assets/css/`.
 - A pull request builds the site with `.github/workflows/hugo.yml`. A merge into `main`
   publishes it with `.github/workflows/pages.yml`.
-- Editors currently need Git access. The CMS in issue #41 is meant to remove that need.
+- Editors use `/admin/` with a GitHub token, so they need a GitHub account with write access.
 
 ## Design Reference
 
@@ -119,7 +118,7 @@ changes.
 
 ## Not In This Project
 
-- Automatic posting to Facebook and WhatsApp. The copy button and Mailchimp come first.
+- Posting to WhatsApp from a server. No official API exists; the editor copies the text.
 - Working out the fasting calendar from scratch. The site shows what the church-year file
   says, and the editor confirms it.
 - The daily scripture readings, the Tone, or the Eothinon.
