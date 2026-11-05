@@ -1,5 +1,5 @@
 // Round-trip and formatting checks for the admin page helpers.
-// Run with: node scripts/test_admin_logic.js
+// Run with: bun scripts/test_admin_logic.js
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');

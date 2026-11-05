@@ -59,7 +59,7 @@ step fails, the summary shows the error and the text is still there for a manual
 ## Local dry run
 
 ```bash
-DRY_RUN=true GITHUB_STEP_SUMMARY=/tmp/post.md node scripts/send_weekly_post.js
+DRY_RUN=true GITHUB_STEP_SUMMARY=/tmp/post.md bun scripts/send_weekly_post.js
 ```
 
 Open `/tmp/post.md` to check the formatted text.

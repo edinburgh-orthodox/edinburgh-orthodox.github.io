@@ -47,7 +47,7 @@
   }
 
   // Show a date as the site does, for example 2026-11-03 as Tue 3rd Nov. The
-  // names are fixed so Node, the browser, and Hugo all print the same label.
+  // names are fixed so the sender, the browser, and Hugo all print the same label.
   function formatDate(value) {
     const iso = isoDate(value);
     const [year, month, day] = iso.split('-').map(Number);

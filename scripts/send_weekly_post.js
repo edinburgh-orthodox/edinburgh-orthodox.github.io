@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 // Send the weekly post to Facebook and Mailchimp.
 //
 // The script reads the Hugo data files, builds the text with the same helpers

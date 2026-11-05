@@ -1,5 +1,5 @@
 // Formatting checks for the weekly post sender. Run with:
-// node scripts/test_send_weekly_post.js
+// bun scripts/test_send_weekly_post.js
 const assert = require('node:assert');
 const send = require('./send_weekly_post.js');
 const logic = require('../edinburgh-orthodox/static/admin/admin-logic.js');
