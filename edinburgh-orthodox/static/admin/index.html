@@ -119,6 +119,13 @@
 </div>
 
 
+<datalist id="service-names">
+  <option value="Matins"></option>
+  <option value="Divine Liturgy"></option>
+  <option value="Vespers"></option>
+  <option value="Supplicatory Canon to the Mother of God"></option>
+</datalist>
+
 <!-- js-yaml 4.1.0, MIT. Vendored so the page does not depend on a CDN. -->
 <script src="js-yaml.min.js"></script>
 <script src="admin-logic.js"></script>
@@ -306,7 +313,7 @@ function serviceRow(service = {}) {
     place.append(node);
   }
   return h('div', { class: 'svc-row' },
-    h('label', {}, 'Service or Event ', h('input', { type: 'text', 'data-f': 'name', value: parts.name, placeholder: 'Matins' })),
+    h('label', {}, 'Service or Event ', h('input', { type: 'text', 'data-f': 'name', list: 'service-names', value: parts.name, placeholder: 'Matins' })),
     h('label', {}, 'Time ', h('input', { type: 'time', 'data-f': 'clock', value: parts.time })),
     h('label', {}, 'Place ', place),
     h('button', { type: 'button', class: 'ghost', 'data-remove': 'svc', title: 'Remove this service' }, 'Remove')
