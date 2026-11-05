@@ -34,6 +34,7 @@
   button.ghost { background: none; color: var(--muted); border-color: var(--line); padding: 4px 9px; font-size: 13px; }
   fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
   .day-head { display: grid; grid-template-columns: 160px 1fr auto; gap: 10px; align-items: end; }
+  .date-label { margin-left: 4px; font-size: 13px; font-weight: 400; color: var(--muted); }
   .svc-row { display: grid; grid-template-columns: 1fr 120px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
   .day button[data-add="svc"] { margin-top: 12px; }
   .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
@@ -85,7 +86,7 @@
 
   <h2>Announcements</h2>
   <p class="week-start">
-    <label>Week of <input type="date" id="week-start"></label>
+    <label>Week of <input type="date" id="week-start"> <span id="week-label" class="date-label"></span></label>
     <span class="note">This sets the first line of the announcements.</span>
   </p>
   <div id="announcements"></div>
@@ -277,7 +278,7 @@ function dayCard(day = {}) {
   for (const service of day.services || []) services.append(serviceRow(service));
   return h('fieldset', { class: 'day' },
     h('div', { class: 'day-head' },
-      h('label', {}, 'Date ', h('input', { type: 'date', 'data-f': 'date', value: isoDate(day.date) })),
+      h('label', {}, 'Date ', h('span', { class: 'date-label' }, formatDate(day.date)), h('input', { type: 'date', 'data-f': 'date', value: isoDate(day.date) })),
       h('label', {}, 'Feast or Note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '' })),
       h('button', { type: 'button', class: 'ghost', 'data-remove': 'day' }, 'Remove day')
     ),
@@ -327,7 +328,9 @@ function render(data) {
   const list = Array.isArray(data.announcements) ? data.announcements : [];
   const first = String(list[0] || '').trim();
   const match = first.match(WEEK_RE);
-  $('#week-start').value = match ? toISO(match[1]) : '';
+  const iso = match ? toISO(match[1]) : '';
+  $('#week-start').value = iso;
+  $('#week-label').textContent = iso ? longDate(iso) : '';
   for (const item of match ? list.slice(1) : list) announcementsBox.append(announcementBox(String(item)));
 }
 
@@ -464,6 +467,16 @@ document.querySelector('main').addEventListener('click', (event) => {
 document.querySelector('#services').addEventListener('input', updateHints);
 document.querySelector('#announcements').addEventListener('input', updateHints);
 document.querySelector('#week-start').addEventListener('input', updateHints);
+
+// The native picker shows the browser format, so show the agreed label beside it.
+document.querySelector('#services').addEventListener('input', (event) => {
+  if (!event.target.matches('[data-f=date]')) return;
+  const label = event.target.closest('.day').querySelector('.date-label');
+  label.textContent = formatDate(event.target.value);
+});
+document.querySelector('#week-start').addEventListener('input', (event) => {
+  $('#week-label').textContent = event.target.value ? longDate(event.target.value) : '';
+});
 
 $('#save').addEventListener('click', save);
 $('#copy').addEventListener('click', copy);
