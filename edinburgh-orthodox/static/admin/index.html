@@ -118,7 +118,8 @@
 <script src="admin-logic.js"></script>
 <script>
 const REPO = 'edinburgh-orthodox/edinburgh-orthodox.github.io';
-const BRANCH = 'main';
+// ?branch=<name> reads and writes a branch, for reviewing a pull request locally.
+const BRANCH = new URLSearchParams(location.search).get('branch') || 'main';
 const WORKFLOW = 'weekly-post.yml';
 const API = 'https://api.github.com';
 const TOKEN_KEY = 'weekly-post-token';
