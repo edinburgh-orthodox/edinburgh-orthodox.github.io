@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Weekly notices admin</title>
+<style>
+  :root { --crimson: #7b1e26; --ink: #1c1a17; --muted: #6b635c; --line: #dcd6cf; --bg: #fbf9f6; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+  header { background: var(--crimson); color: #fff; padding: 14px 20px; }
+  header h1 { margin: 0; font: 22px/1.2 Georgia, serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 20px; }
+  h2 { font: 20px/1.2 Georgia, serif; color: var(--crimson); margin: 28px 0 10px; }
+  label { display: block; font-size: 13px; color: var(--muted); }
+  input[type=text], textarea { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; font: inherit; }
+  textarea { resize: vertical; }
+  button { font: inherit; padding: 8px 14px; border: 1px solid var(--crimson); border-radius: 4px; background: var(--crimson); color: #fff; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  button.ghost { background: none; color: var(--muted); border-color: var(--line); padding: 4px 9px; font-size: 13px; }
+  fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
+  .day-head { display: grid; grid-template-columns: 120px 1fr auto; gap: 10px; align-items: end; }
+  .svc-row { display: grid; grid-template-columns: 1fr 200px auto; gap: 8px; margin-top: 8px; align-items: end; }
+  .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
+  @media (max-width: 620px) {
+    .day-head { grid-template-columns: 1fr; }
+    .day-head button { justify-self: start; }
+    .svc-row { grid-template-columns: 1fr auto; }
+    .svc-row label:first-child { grid-column: 1 / -1; }
+  }
+  .toolbar { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 12px; margin-top: 30px; background: #fff; border-top: 1px solid var(--line); }
+  .toolbar label { display: inline-flex; gap: 6px; align-items: center; color: var(--ink); font-size: 15px; }
+  #status { min-height: 1.5em; font-size: 14px; }
+  #status.ok { color: #2f6b3a; }
+  #status.err { color: #a32020; }
+  .note { color: var(--muted); font-size: 14px; }
+  code { background: #f0ece6; padding: 1px 4px; border-radius: 3px; }
+  #preview { margin-top: 8px; font-family: ui-monospace, monospace; font-size: 13px; }
+</style>
+</head>
+<body data-pagefind-ignore>
+<header><h1>Weekly notices admin</h1></header>
+<main>
+
+<div id="login" hidden>
+  <h2>Sign in</h2>
+  <p class="note">This page commits to the website repository as you. It needs a GitHub token stored in this browser only.</p>
+  <p class="note">Create a fine-grained token at <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">github.com/settings/tokens</a> for the
+    <code>edinburgh-orthodox.org.uk</code> repository with <strong>Contents: Read and write</strong> and <strong>Actions: Read and write</strong>.</p>
+  <p><label>Token <input type="password" id="token" autocomplete="off"></label></p>
+  <p><button id="signin">Sign in</button></p>
+  <p id="login-status" role="status" aria-live="polite"></p>
+</div>
+
+<div id="editor" hidden>
+  <h2>Weekly services</h2>
+  <div id="services"></div>
+  <p><button type="button" class="ghost" data-add="day">+ Add day</button></p>
+
+  <h2>Announcements</h2>
+  <div id="announcements"></div>
+  <p><button type="button" class="ghost" data-add="ann">+ Add announcement</button></p>
+
+  <div class="toolbar">
+    <button id="save">Save changes</button>
+    <label><input type="checkbox" id="dry" checked> Dry run</label>
+    <button id="send">Send notices</button>
+    <button id="copy">Copy for WhatsApp</button>
+    <button id="signout" class="ghost">Sign out</button>
+  </div>
+  <p id="status" role="status" aria-live="polite"></p>
+  <details id="preview-wrap" hidden>
+    <summary>Text for WhatsApp</summary>
+    <textarea id="preview" rows="20" readonly></textarea>
+  </details>
+</div>
+
+<datalist id="locations">
+  <option value="Meadow Lane"></option>
+  <option value="Chapel Street"></option>
+  <option value="Craigmillar Park"></option>
+</datalist>
+
+<!-- js-yaml 4.1.0, MIT. Vendored so the page does not depend on a CDN. -->
+<script src="js-yaml.min.js"></script>
+<script>
+const REPO = 'edinburgh-orthodox/edinburgh-orthodox.org.uk';
+const BRANCH = 'main';
+const WORKFLOW = 'weekly-notices.yml';
+const API = 'https://api.github.com';
+const SITE_URL = 'https://edinburgh-orthodox.org.uk';
+const TOKEN_KEY = 'weekly-notices-token';
+const FILES = {
+  services: { path: 'edinburgh-orthodox/data/services.yaml', header: '# Weekly services, edited at /admin/.\n' },
+  announcements: { path: 'edinburgh-orthodox/data/announcements.yaml', header: '# Weekly announcements, edited at /admin/.\n' }
+};
+
+let token = localStorage.getItem(TOKEN_KEY) || '';
+let shas = {};
+let dirty = false;
+let busy = false;
+let action = 0;
+
+const $ = (sel) => document.querySelector(sel);
+const statusEl = () => $('#status');
+
+function h(tag, attrs, ...kids) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs || {})) {
+    if (key === 'class') node.className = value;
+    else node.setAttribute(key, value);
+  }
+  for (const kid of kids) node.append(kid?.nodeType ? kid : document.createTextNode(kid ?? ''));
+  return node;
+}
+
+function setStatus(message, kind = '', id = null) {
+  if (id !== null && id !== action) return;
+  const el = statusEl();
+  el.textContent = message;
+  el.className = kind;
+}
+
+function markDirty() { dirty = true; }
+
+async function gh(path, options = {}) {
+  const response = await fetch(API + path, {
+    ...options,
+    headers: {
+      Authorization: 'Bearer ' + token,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...(options.headers || {})
+    }
+  });
+  if (!response.ok) {
+    let detail = response.statusText;
+    try { detail = (await response.json()).message || detail; } catch {}
+    const error = new Error(detail);
+    error.status = response.status;
+    throw error;
+  }
+  return response.status === 204 ? null : response.json();
+}
+
+function b64decode(text) {
+  const binary = atob(text.replace(/\s/g, ''));
+  return new TextDecoder().decode(Uint8Array.from(binary, (c) => c.charCodeAt(0)));
+}
+
+function b64encode(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+async function readFile(file) {
+  const data = await gh(`/repos/${REPO}/contents/${file.path}?ref=${BRANCH}`);
+  return { sha: data.sha, text: b64decode(data.content) };
+}
+
+async function writeFile(file, text, sha) {
+  const body = {
+    message: 'Update ' + file.path.split('/').pop().replace('.yaml', ''),
+    content: b64encode(text),
+    branch: BRANCH,
+    ...(sha ? { sha } : {})
+  };
+  const data = await gh(`/repos/${REPO}/contents/${file.path}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  return data.content.sha;
+}
+
+// Mirrors format_text() in scripts/send_weekly_notices.py. Change both together.
+function formatText(services, announcements) {
+  const lines = ['SERVICES THIS WEEK', ''];
+  for (const day of services) {
+    let heading = String(day.date || '').trim();
+    const note = String(day.note || '').trim();
+    if (note) heading += ' - ' + note;
+    lines.push(heading);
+    for (const service of day.services || []) {
+      const time = String(service.time || '').trim();
+      const location = String(service.location || '').trim();
+      lines.push(location ? `${time} (${location})` : time);
+    }
+    lines.push('');
+  }
+  if (announcements.length) {
+    lines.push('ANNOUNCEMENTS', '');
+    for (const item of announcements) {
+      lines.push(String(item).trim());
+      lines.push('');
+    }
+  }
+  lines.push(SITE_URL);
+  return lines.join('\n').trim() + '\n';
+}
+
+function serviceRow(service = {}) {
+  return h('div', { class: 'svc-row' },
+    h('label', {}, 'Service ', h('input', { type: 'text', 'data-f': 'time', value: service.time || '', placeholder: 'Matins 7:30am' })),
+    h('label', {}, 'Place ', h('input', { type: 'text', 'data-f': 'location', value: service.location || '', list: 'locations', placeholder: 'Meadow Lane' })),
+    h('button', { type: 'button', class: 'ghost', 'data-remove': 'svc', title: 'Remove this service' }, 'Remove')
+  );
+}
+
+function dayCard(day = {}) {
+  const services = h('div', { class: 'svcs' });
+  for (const service of day.services || []) services.append(serviceRow(service));
+  return h('fieldset', { class: 'day' },
+    h('div', { class: 'day-head' },
+      h('label', {}, 'Date ', h('input', { type: 'text', 'data-f': 'date', value: day.date || '', placeholder: 'Mon 26' })),
+      h('label', {}, 'Feast or note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '', placeholder: 'St Demetrios' })),
+      h('button', { type: 'button', class: 'ghost', 'data-remove': 'day' }, 'Remove day')
+    ),
+    services,
+    h('button', { type: 'button', class: 'ghost', 'data-add': 'svc' }, '+ Add service')
+  );
+}
+
+function announcementBox(text = '') {
+  const box = h('textarea', { rows: '4' });
+  box.value = text;
+  return h('div', { class: 'ann-row' }, box,
+    h('button', { type: 'button', class: 'ghost', 'data-remove': 'ann' }, 'Remove'));
+}
+
+function readServices() {
+  return [...document.querySelectorAll('#services .day')].map((card) => {
+    const day = { date: card.querySelector('[data-f=date]').value.trim() };
+    const note = card.querySelector('[data-f=note]').value.trim();
+    if (note) day.note = note;
+    day.services = [...card.querySelectorAll('.svc-row')].map((row) => ({
+      time: row.querySelector('[data-f=time]').value.trim(),
+      location: row.querySelector('[data-f=location]').value.trim()
+    })).filter((service) => service.time);
+    return day;
+  }).filter((day) => day.date || day.services.length);
+}
+
+function readAnnouncements() {
+  return [...document.querySelectorAll('#announcements textarea')]
+    .map((box) => box.value.trim())
+    .filter(Boolean);
+}
+
+function render(data) {
+  const services = $('#services');
+  const announcements = $('#announcements');
+  services.textContent = '';
+  announcements.textContent = '';
+  const days = Array.isArray(data.services) ? data.services : [];
+  for (const day of days) services.append(dayCard(day));
+  if (!days.length) services.append(dayCard());
+  for (const item of data.announcements || []) announcements.append(announcementBox(String(item)));
+}
+
+async function load() {
+  const [services, announcements] = await Promise.all([readFile(FILES.services), readFile(FILES.announcements)]);
+  shas = { services: services.sha, announcements: announcements.sha };
+  render({
+    services: jsyaml.load(services.text) || [],
+    announcements: jsyaml.load(announcements.text) || []
+  });
+  dirty = false;
+  $('#login').hidden = true;
+  $('#editor').hidden = false;
+  setStatus('');
+}
+
+async function save() {
+  const id = ++action;
+  busy = true;
+  $('#save').disabled = true;
+  try {
+    setStatus('Saving…', '', id);
+    const servicesText = FILES.services.header + jsyaml.dump(readServices(), { lineWidth: 80, noRefs: true });
+    const announcementsText = FILES.announcements.header + jsyaml.dump(readAnnouncements(), { lineWidth: 80, noRefs: true });
+    shas.services = await writeFile(FILES.services, servicesText, shas.services);
+    shas.announcements = await writeFile(FILES.announcements, announcementsText, shas.announcements);
+    dirty = false;
+    setStatus('Saved. The site rebuilds in about a minute.', 'ok', id);
+  } catch (error) {
+    setStatus('Save failed: ' + error.message, 'err', id);
+  } finally {
+    busy = false;
+    $('#save').disabled = false;
+  }
+}
+
+async function copy() {
+  const id = ++action;
+  const text = formatText(readServices(), readAnnouncements());
+  const preview = $('#preview');
+  preview.value = text;
+  $('#preview-wrap').hidden = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    setStatus('Copied. Paste it into the WhatsApp group.', 'ok', id);
+  } catch {
+    preview.select();
+    setStatus('Could not reach the clipboard. The text is selected below, copy it by hand.', 'err', id);
+  }
+}
+
+async function send() {
+  const id = ++action;
+  if (dirty) {
+    setStatus('Save first. The action reads the saved files, not this page.', 'err', id);
+    return;
+  }
+  const dryRun = $('#dry').checked;
+  if (!dryRun && !confirm('Post to Facebook and send the Mailchimp email now?')) return;
+  busy = true;
+  $('#send').disabled = true;
+  try {
+    setStatus(dryRun ? 'Starting a dry run…' : 'Sending…', '', id);
+    await gh(`/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: BRANCH, inputs: { dry_run: String(dryRun), channels: 'both' } })
+    });
+    const run = `https://github.com/${REPO}/actions/workflows/${WORKFLOW}`;
+    setStatus(dryRun
+      ? 'Dry run started. Check the summary: ' + run
+      : 'Sending. The summary lists what was posted: ' + run, 'ok', id);
+  } catch (error) {
+    setStatus(error.status === 404
+      ? 'No send action on main yet. Merge pull request #43 first.'
+      : 'Send failed: ' + error.message, 'err', id);
+  } finally {
+    busy = false;
+    $('#send').disabled = false;
+  }
+}
+
+$('#services').addEventListener('click', (event) => {
+  const button = event.target.closest('button');
+  if (!button) return;
+  if (button.dataset.add === 'svc') button.parentElement.querySelector('.svcs').append(serviceRow());
+  else if (button.dataset.remove === 'svc') button.closest('.svc-row').remove();
+  else if (button.dataset.remove === 'day') button.closest('.day').remove();
+  else return;
+  markDirty();
+});
+
+$('#announcements').addEventListener('click', (event) => {
+  if (event.target.closest('[data-remove=ann]')) {
+    event.target.closest('.ann-row').remove();
+    markDirty();
+  }
+});
+
+document.querySelector('main').addEventListener('click', (event) => {
+  if (event.target.closest('[data-add=day]')) {
+    $('#services').append(dayCard());
+    markDirty();
+  } else if (event.target.closest('[data-add=ann]')) {
+    $('#announcements').append(announcementBox());
+    markDirty();
+  }
+});
+
+document.querySelector('#services').addEventListener('input', markDirty);
+document.querySelector('#announcements').addEventListener('input', markDirty);
+
+$('#save').addEventListener('click', save);
+$('#copy').addEventListener('click', copy);
+$('#send').addEventListener('click', send);
+
+$('#signout').addEventListener('click', () => {
+  localStorage.removeItem(TOKEN_KEY);
+  location.reload();
+});
+
+$('#signin').addEventListener('click', async () => {
+  token = $('#token').value.trim();
+  if (!token) return;
+  $('#login-status').textContent = 'Checking…';
+  try {
+    await gh(`/repos/${REPO}`);
+    localStorage.setItem(TOKEN_KEY, token);
+    $('#login-status').textContent = '';
+    await load();
+  } catch (error) {
+    $('#login-status').textContent = error.status === 401
+      ? 'GitHub rejected that token.'
+      : 'Could not reach the repository: ' + error.message;
+  }
+});
+
+if (!window.jsyaml) {
+  $('#login').hidden = false;
+  $('#login-status').textContent = 'Could not load the YAML library. Reload the page.';
+} else if (!token) {
+  $('#login').hidden = false;
+} else {
+  load().catch((error) => {
+    if (error.status === 401) {
+      localStorage.removeItem(TOKEN_KEY);
+      $('#login').hidden = false;
+      $('#login-status').textContent = 'That token is no longer accepted. Sign in again.';
+    } else {
+      $('#login').hidden = false;
+      $('#login-status').textContent = 'Could not load the files: ' + error.message;
+    }
+  });
+}
+</script>
+</body>
+</html>
