@@ -27,7 +27,8 @@
                 <div class="cal">
                     {{ range $services }}
                         <div class="cal-day">
-                            <div class="cal-date">{{ .date }}</div>
+                            {{ $day := time.AsTime .date }}
+                            <div class="cal-date">{{ $day.Format "Mon" }} {{ partial "ordinal.html" $day.Day }} {{ $day.Format "Jan" }}</div>
                             <div class="cal-body">
                                 {{ range .services }}
                                     <span class="svc">{{ .time }}<span class="loc">({{ .location }})</span></span>
