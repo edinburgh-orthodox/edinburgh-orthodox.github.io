@@ -1,4 +1,5 @@
 name: Send weekly notices
+run-name: Weekly notices ${{ inputs.dry_run && 'dry run' || 'live send' }}
 
 on:
   workflow_dispatch:
