@@ -34,7 +34,10 @@
   button.ghost { background: none; color: var(--muted); border-color: var(--line); padding: 4px 9px; font-size: 13px; }
   fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
   .day-head { display: grid; grid-template-columns: 160px 1fr auto; gap: 10px; align-items: end; }
-  .date-label { margin-left: 4px; font-size: 13px; font-weight: 400; color: var(--muted); }
+  .date-field { position: relative; display: block; }
+  .date-field input[type=date] { color: transparent; }
+  .date-field input[type=date]::-webkit-datetime-edit { color: transparent; }
+  .date-field .date-label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 16px; font-weight: 400; color: var(--ink); }
   .svc-row { display: grid; grid-template-columns: 1fr 120px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
   .day button[data-add="svc"] { margin-top: 12px; }
   .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
@@ -49,7 +52,8 @@
   .toolbar label { display: inline-flex; gap: 6px; align-items: center; color: var(--ink); font-size: 15px; }
   .hints { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 8px 0 0; font-size: 13px; color: var(--muted); }
   .week-start { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .week-start input { width: auto; }
+  .week-start .date-field { width: 190px; }
+  .week-start .date-field input { width: 100%; }
   #status { min-height: 1.5em; font-size: 14px; }
   #status.ok { color: #2f6b3a; }
   #status.err { color: #a32020; }
@@ -86,7 +90,7 @@
 
   <h2>Announcements</h2>
   <p class="week-start">
-    <label>Week of <input type="date" id="week-start"> <span id="week-label" class="date-label"></span></label>
+    <label>Week of <span class="date-field"><input type="date" id="week-start"><span id="week-label" class="date-label"></span></span></label>
     <span class="note">This sets the first line of the announcements.</span>
   </p>
   <div id="announcements"></div>
@@ -166,7 +170,7 @@ function updateHints() {
   dirty = days.length > 0 || announcementsChanged;
 
   const parts = [];
-  if (days.length) parts.push(days.length <= 2 ? days.join(' and ') : days.length + ' days');
+  if (days.length) parts.push(days.length <= 2 ? days.map(formatDate).join(' and ') : days.length + ' days');
   if (announcementsChanged) parts.push('the announcements');
   $('#save-hint').textContent = parts.length ? 'Unsaved changes: ' + parts.join(' and ') + '.' : 'All changes saved.';
   $('#save').disabled = busy || !parts.length;
@@ -278,7 +282,9 @@ function dayCard(day = {}) {
   for (const service of day.services || []) services.append(serviceRow(service));
   return h('fieldset', { class: 'day' },
     h('div', { class: 'day-head' },
-      h('label', {}, 'Date ', h('span', { class: 'date-label' }, formatDate(day.date)), h('input', { type: 'date', 'data-f': 'date', value: isoDate(day.date) })),
+      h('label', {}, 'Date ', h('span', { class: 'date-field' },
+        h('input', { type: 'date', 'data-f': 'date', value: isoDate(day.date) }),
+        h('span', { class: 'date-label' }, formatDate(day.date)))),
       h('label', {}, 'Feast or Note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '' })),
       h('button', { type: 'button', class: 'ghost', 'data-remove': 'day' }, 'Remove day')
     ),
