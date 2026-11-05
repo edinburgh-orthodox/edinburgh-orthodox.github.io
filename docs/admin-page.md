@@ -8,7 +8,7 @@ notices action, and puts the WhatsApp text on the clipboard.
 
 1. Open https://edinburgh-orthodox.org.uk/admin/ .
 2. Create a fine-grained token at https://github.com/settings/tokens?type=beta for the
-   `edinburgh-orthodox.org.uk` repository. Give it Contents: Read and write and Actions: Read
+   `edinburgh-orthodox.github.io` repository. Give it Contents: Read and write and Actions: Read
    and write.
 3. Paste the token into the page and click Sign in.
 
