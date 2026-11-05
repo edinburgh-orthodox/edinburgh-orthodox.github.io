@@ -35,9 +35,10 @@
   fieldset { border: 1px solid var(--line); border-radius: 6px; background: #fff; margin: 0 0 12px; padding: 12px; }
   .day-head { display: grid; grid-template-columns: 160px 1fr auto; gap: 10px; align-items: end; }
   .date-field { position: relative; display: block; }
-  .date-field input[type=date] { color: transparent; }
-  .date-field input[type=date]::-webkit-datetime-edit { color: transparent; }
-  .date-field .date-label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 16px; font-weight: 400; color: var(--ink); }
+  .date-display { position: relative; width: 100%; height: 36px; padding: 7px 34px 7px 9px; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+  .date-display:hover, .date-display:focus-visible { border-color: var(--crimson); }
+  .date-display::after { content: ""; position: absolute; right: 10px; top: 50%; width: 15px; height: 15px; transform: translateY(-50%); opacity: .55; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%236b635c' stroke-width='1.4'%3E%3Crect x='2' y='3.5' width='12' height='10.5' rx='1'/%3E%3Cpath d='M2 6.5h12M5 1.5v3M11 1.5v3'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .date-field .date-input { position: absolute; left: 0; bottom: 0; width: 1px; height: 1px; padding: 0; border: 0; opacity: 0; pointer-events: none; }
   .svc-row { display: grid; grid-template-columns: 1fr 120px 180px auto; gap: 8px; margin-top: 8px; align-items: end; }
   .day button[data-add="svc"] { margin-top: 12px; }
   .ann-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; margin-bottom: 10px; }
@@ -90,7 +91,7 @@
 
   <h2>Announcements</h2>
   <p class="week-start">
-    <label>Week of <span class="date-field"><input type="date" id="week-start"><span id="week-label" class="date-label"></span></span></label>
+    <label>Week of <span id="week-field"></span></label>
     <span class="note">This sets the first line of the announcements.</span>
   </p>
   <div id="announcements"></div>
@@ -241,6 +242,7 @@ function toISO(text) {
 }
 
 function longDate(iso) {
+  if (!iso) return '';
   const [year, month, day] = iso.split('-').map(Number);
   return new Date(year, month - 1, day).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 }
@@ -260,6 +262,40 @@ function nextDayDate() {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
+// A visible label for the date, with the native picker behind it. The native
+// input cannot show anything but the browser's own format, so it stays hidden
+// and the button opens it.
+function makeDateField(value, format, onPick) {
+  const input = h('input', { type: 'date', class: 'date-input', tabindex: '-1', 'aria-hidden': 'true' });
+  const button = h('button', { type: 'button', class: 'date-display', title: 'Change date' });
+  const element = h('span', { class: 'date-field' }, button, input);
+
+  function set(next) {
+    input.value = isoDate(next);
+    button.textContent = next ? format(next) : '';
+  }
+
+  button.addEventListener('click', () => {
+    try {
+      if (typeof input.showPicker === 'function') input.showPicker();
+      else input.focus();
+    } catch {
+      input.focus();
+    }
+  });
+  input.addEventListener('input', () => {
+    button.textContent = input.value ? format(input.value) : '';
+    if (onPick) onPick(input.value);
+  });
+
+  set(value);
+  return { element, input, button, set };
+}
+
+const weekField = makeDateField('', longDate, () => updateHints());
+weekField.input.id = 'week-start';
+$('#week-field').append(weekField.element);
+
 function serviceRow(service = {}) {
   const parts = splitService(service.time);
   const places = !service.location || PLACES.includes(service.location) ? PLACES : [service.location, ...PLACES];
@@ -278,13 +314,13 @@ function serviceRow(service = {}) {
 }
 
 function dayCard(day = {}) {
+  const date = makeDateField(day.date, formatDate);
+  date.input.setAttribute('data-f', 'date');
   const services = h('div', { class: 'svcs' });
   for (const service of day.services || []) services.append(serviceRow(service));
   return h('fieldset', { class: 'day' },
     h('div', { class: 'day-head' },
-      h('label', {}, 'Date ', h('span', { class: 'date-field' },
-        h('input', { type: 'date', 'data-f': 'date', value: isoDate(day.date) }),
-        h('span', { class: 'date-label' }, formatDate(day.date)))),
+      h('label', {}, 'Date ', date.element),
       h('label', {}, 'Feast or Note ', h('input', { type: 'text', 'data-f': 'note', value: day.note || '' })),
       h('button', { type: 'button', class: 'ghost', 'data-remove': 'day' }, 'Remove day')
     ),
@@ -335,8 +371,7 @@ function render(data) {
   const first = String(list[0] || '').trim();
   const match = first.match(WEEK_RE);
   const iso = match ? toISO(match[1]) : '';
-  $('#week-start').value = iso;
-  $('#week-label').textContent = iso ? longDate(iso) : '';
+  weekField.set(iso);
   for (const item of match ? list.slice(1) : list) announcementsBox.append(announcementBox(String(item)));
 }
 
@@ -472,17 +507,6 @@ document.querySelector('main').addEventListener('click', (event) => {
 
 document.querySelector('#services').addEventListener('input', updateHints);
 document.querySelector('#announcements').addEventListener('input', updateHints);
-document.querySelector('#week-start').addEventListener('input', updateHints);
-
-// The native picker shows the browser format, so show the agreed label beside it.
-document.querySelector('#services').addEventListener('input', (event) => {
-  if (!event.target.matches('[data-f=date]')) return;
-  const label = event.target.closest('.day').querySelector('.date-label');
-  label.textContent = formatDate(event.target.value);
-});
-document.querySelector('#week-start').addEventListener('input', (event) => {
-  $('#week-label').textContent = event.target.value ? longDate(event.target.value) : '';
-});
 
 $('#save').addEventListener('click', save);
 $('#copy').addEventListener('click', copy);
