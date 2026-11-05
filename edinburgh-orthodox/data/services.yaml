@@ -1,5 +1,4 @@
-# Sample week for 26 October to 1 November 2026. Replace with current, confirmed information.
-# TODO: Decide whether this file remains the source or is generated from Google Calendar.
+# Weekly services, edited at /admin/.
 - date: Mon 26
   note: St Demetrios the Myrrhstreamer of Thessaloniki
   services:
@@ -25,7 +24,7 @@
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-    - time: "Choir Class: Christmas carols rehearsal 7:30pm"
+    - time: 'Choir Class: Christmas carols rehearsal 7:30pm'
       location: Meadow Lane
 - date: Thu 29
   services:
@@ -33,7 +32,7 @@
       location: Meadow Lane
     - time: Vespers 6:30pm
       location: Meadow Lane
-    - time: "Youth Fellowship: Dr Zinaida Lewczuk, Digital Addictions 7:30pm"
+    - time: 'Youth Fellowship: Dr Zinaida Lewczuk, Digital Addictions 7:30pm'
       location: Meadow Lane
 - date: Fri 30
   services:
@@ -42,7 +41,9 @@
     - time: Vespers 6:30pm
       location: Meadow Lane
 - date: Sat 31
-  note: Apostles Stachys, Amplias, Urban, Narcissus, Apelles & Aristobulus of the Seventy
+  note: >-
+    Apostles Stachys, Amplias, Urban, Narcissus, Apelles & Aristobulus of the
+    Seventy
   services:
     - time: Matins 8:30am
       location: Meadow Lane
@@ -51,11 +52,13 @@
     - time: Vespers 6:30pm
       location: Meadow Lane
 - date: Sun 1
-  note: Wonderworkers and Unmercenaries Cosmas and Damian of Mesopotamia and their Mother, St Theodota & St Cadfan of Bardsey
+  note: >-
+    Wonderworkers and Unmercenaries Cosmas and Damian of Mesopotamia and their
+    Mother, St Theodota & St Cadfan of Bardsey
   services:
     - time: Matins 8:30am
-      location: Chapel Street
+      location: ''
     - time: Divine Liturgy 10:00am
-      location: Chapel Street
+      location: ''
     - time: Vespers 6:30pm
       location: Meadow Lane
